@@ -7,11 +7,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import java.time.Duration;
+import java.util.HashMap;
 
 public class WebDriverHelper {
     static WebDriver driver;
     public static Logger log = LogManager.getLogger();
-
+    public static HashMap<String, String> globalVariables = new HashMap<>();
     public static void launchBrowser() throws Exception {
         String baseURL = null;
         String browser = FileUtils.getProperty("config.properties", "browser");
@@ -42,6 +43,7 @@ public class WebDriverHelper {
     }
 
     public static void tearDown() {
+        globalVariables.clear();
         if (driver != null) {
             driver.quit();
         }

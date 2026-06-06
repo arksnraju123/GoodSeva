@@ -44,4 +44,9 @@ public class AppointmentsSteps {
             appointmentsPage.enterLoadInfo(row.get("LoadType"), row.get("EstimatedDuration"));
         }
     }
+
+    @When("^User book appointment$")
+    public void bookAppointment() {
+        appointmentsPage.clickOnBookAppointment();
+    }
 }

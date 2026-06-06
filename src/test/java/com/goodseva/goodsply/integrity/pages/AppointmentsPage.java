@@ -48,6 +48,9 @@ public class AppointmentsPage extends DriverUtils {
     @FindBy(how = How.NAME, using = "estimatedDuration")
     private WebElement estimatedDurationTextbox;
 
+    @FindBy(how = How.XPATH, using = "//button[text()='Book Appointment']")
+    private WebElement bookAppointment;
+
     public void clickOnNewAppointmentButton(){
         click(newAppointmentButton, "New Appointment button");
     }
@@ -64,11 +67,15 @@ public class AppointmentsPage extends DriverUtils {
     }
 
     public void enterScheduleDetails(){
-        enterText(date, DateTimeUtils.getFutureDate(1, "dd-MM-yyyy"), "Date textbox");
-        enterText(startTime, DateTimeUtils.getCurrentTime("hh:mm a"), "Start Time textbox");
+        String startTimeValue = DateTimeUtils.getCurrentTime("hh:mm a");
+        String endTimeValue = DateTimeUtils.getFutureTimeInMinutes(1, "hh:mm a");
+        globalVariables.put("startTime", DateTimeUtils.convertTime(startTimeValue, "hh:mm a", "h:mm a"));
+        globalVariables.put("endTime", DateTimeUtils.convertTime(endTimeValue, "hh:mm a", "h:mm a"));
+        enterText(date, DateTimeUtils.getFutureDate(0, "dd-MM-yyyy"), "Date textbox");
+        enterText(startTime, startTimeValue, "Start Time textbox");
         pressEnter();
-        enterText(endDate, DateTimeUtils.getFutureDate(2, "dd-MM-yyyy"), "End Date textbox");
-        enterText(endTime, DateTimeUtils.getFutureTimeInMinutes(1, "hh:mm a"), "End Time textbox");
+        enterText(endDate, DateTimeUtils.getFutureDate(1, "dd-MM-yyyy"), "End Date textbox");
+        enterText(endTime, endTimeValue, "End Time textbox");
         pressLeftArrow();
         pressDownArrow();
         pressEnter();
@@ -78,5 +85,9 @@ public class AppointmentsPage extends DriverUtils {
         selectDropdownValueByVisibleText(loadTypeDropdown, loadType, "Load Type dropdown");
         clearData(estimatedDurationTextbox, "Estimated Duration (minutes) textbox");
         enterText(estimatedDurationTextbox, estimatedDuration, "Estimated Duration (minutes) textbox");
+    }
+
+    public void clickOnBookAppointment(){
+        click(bookAppointment, "Book Appointment button");
     }
 }

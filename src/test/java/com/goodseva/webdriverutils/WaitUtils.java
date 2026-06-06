@@ -5,12 +5,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 public class WaitUtils extends WebDriverHelper {
 	static WebDriverWait wait;
@@ -35,6 +37,11 @@ public class WaitUtils extends WebDriverHelper {
 		wait.until(ExpectedConditions.visibilityOf(element));
 	}
 
+	public static void waitForAlert() {
+		wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.alertIsPresent());
+	}
+
 	public static void waitForDropdownOptions(WebElement dropdownElement) {
 		WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
 		// Wait until dropdown has at least one option
@@ -42,7 +49,7 @@ public class WaitUtils extends WebDriverHelper {
 			try {
 				Select select = new Select(dropdownElement);
 				List<WebElement> options = select.getOptions();
-				// ✅ Ensure dropdown has more than 1 option (often first is "Select..." placeholder)
+				// Ensure dropdown has more than 1 option (often first is "Select..." placeholder)
 				return options.size() > 1;
 			} catch (StaleElementReferenceException e) {
 				// If DOM refreshes, retry

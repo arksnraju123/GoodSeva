@@ -38,4 +38,11 @@ public class DateTimeUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat);
         return futureTime.format(formatter);
     }
+
+    public static String convertTime(String inputTime, String inputTimeFormat, String outputTimeFormat){
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(inputTimeFormat);
+        LocalTime time = LocalTime.parse(inputTime, inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(outputTimeFormat);
+        return time.format(outputFormatter);
+    }
 }

@@ -3,9 +3,7 @@ package com.goodseva.webdriverutils;
 import com.goodseva.utils.WebDriverHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
@@ -48,7 +46,14 @@ public class DriverUtils extends WebDriverHelper {
 		highlightElement(element);
 		return element.getText().trim();
 	}
-	
+
+	public WebElement getElement(By element, String elementName) {
+		log.info("GetFindingting element "+elementName);
+		WaitUtils.waitForElementClickable(getDriver().findElement(element));
+		highlightElement(getDriver().findElement(element));
+		return getDriver().findElement(element);
+	}
+
 	public String getTextBoxValue(WebElement element, String elementName) {
 		log.info("Getting text from textbox "+elementName);
 		WaitUtils.waitForElementClickable(element);
@@ -65,6 +70,7 @@ public class DriverUtils extends WebDriverHelper {
 	public boolean isElementDisplayed(WebElement element, String elementName) {
 		log.info("Finding "+elementName+" is displayed or not");
 		try {
+			//WaitUtils.waitForElementClickable(element);
 			if(element.isDisplayed()) {
 				highlightElement(element);
 				return true;
@@ -89,6 +95,18 @@ public class DriverUtils extends WebDriverHelper {
 		select.selectByVisibleText(dropdownValue);
 	}
 
+	public void selectDropdownValueByIndex(WebElement element, String index, String dropdownName) {
+		WaitUtils.waitForElementClickable(element);
+		highlightElement(element);
+		Select select = new Select(element);
+		log.info("Selecting "+select.getOptions().get(Integer.parseInt(index)).getText()+" from "+dropdownName);
+		select.selectByIndex(Integer.parseInt(index));
+	}
+
+	public String getDropdownValueByIndex(WebElement element, String index){
+		return new Select(element).getOptions().get(Integer.parseInt(index)).getText();
+	}
+
 	public void pressDownArrow(){
 		Actions act = new Actions(getDriver());
 		act.sendKeys(Keys.chord(Keys.ARROW_DOWN)).build().perform();
@@ -107,6 +125,14 @@ public class DriverUtils extends WebDriverHelper {
 		click(element, fieldName);
 		element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
 		element.sendKeys(Keys.DELETE);
+	}
+
+	public static String getAttribute(WebElement element, String attributeName){
+		return element.getAttribute(attributeName);
+	}
+
+	public void acceptAlert(){
+		getDriver().switchTo().alert().accept();
 	}
 }
 

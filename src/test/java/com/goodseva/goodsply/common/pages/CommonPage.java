@@ -33,6 +33,9 @@ public class CommonPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Appointments']")
     private WebElement appointmentsLink;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Zones']")
+    private WebElement zonesLink;
+
     public void clickOnSignIn() {
         click(signIn, "SignIn Link");
     }
@@ -54,5 +57,13 @@ public class CommonPage extends DriverUtils {
             WaitUtils.waitForPageLoads();
         }
         jsClick(appointmentsLink, "Appointments Link");
+    }
+
+    public void openZonesPage(){
+        if(isIntegrityExpand()){
+            click(integrityExpand, "Expand Integrity");
+            WaitUtils.waitForPageLoads();
+        }
+        jsClick(zonesLink, "Zones Link");
     }
 }
