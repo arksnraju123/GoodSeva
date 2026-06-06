@@ -1,0 +1,112 @@
+[INFO ] 2026-06-06 18:43:39,149 com.goodseva.utils.FileUtils:27 - Getting browser from config.properties
+[INFO ] 2026-06-06 18:43:39,152 com.goodseva.utils.FileUtils:28 - browser value is: Chrome
+[INFO ] 2026-06-06 18:43:39,153 com.goodseva.utils.FileUtils:27 - Getting appName from config.properties
+[INFO ] 2026-06-06 18:43:39,153 com.goodseva.utils.FileUtils:28 - appName value is: goodsply
+[INFO ] 2026-06-06 18:43:39,153 com.goodseva.utils.FileUtils:27 - Getting goodsplyURL from config.properties
+[INFO ] 2026-06-06 18:43:39,154 com.goodseva.utils.FileUtils:28 - goodsplyURL value is: https://goodsply.com/
+[INFO ] 2026-06-06 18:43:39,154 com.goodseva.utils.WebDriverHelper:27 - Launching Chrome browser
+[INFO ] 2026-06-06 18:43:40,345 com.goodseva.utils.WebDriverHelper:36 - Navigating to: https://goodsply.com/
+[INFO ] 2026-06-06 18:43:43,609 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on SignIn Link
+[INFO ] 2026-06-06 18:43:44,397 com.goodseva.utils.FileUtils:27 - Getting goodsPlyUserName from config.properties
+[INFO ] 2026-06-06 18:43:44,397 com.goodseva.utils.FileUtils:28 - goodsPlyUserName value is: admin@test.com
+[INFO ] 2026-06-06 18:43:44,400 com.goodseva.webdriverutils.DriverUtils:13 - Entering admin@test.com in Email/Username/Mobile Number textbox
+[INFO ] 2026-06-06 18:43:44,675 com.goodseva.utils.FileUtils:27 - Getting goodsPlyPassword from config.properties
+[INFO ] 2026-06-06 18:43:44,675 com.goodseva.utils.FileUtils:28 - goodsPlyPassword value is: TestPass@2026!
+[INFO ] 2026-06-06 18:43:44,675 com.goodseva.webdriverutils.DriverUtils:13 - Entering TestPass@2026! in Password textbox
+[INFO ] 2026-06-06 18:43:44,932 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on SignIn button
+[INFO ] 2026-06-06 18:43:45,163 com.goodseva.webdriverutils.DriverUtils:71 - Finding Integrity expand icon is displayed or not
+[INFO ] 2026-06-06 18:44:05,245 com.goodseva.webdriverutils.DriverUtils:36 - Clicking on Appointments Link
+[INFO ] 2026-06-06 18:44:05,475 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on New Appointment button
+[INFO ] 2026-06-06 18:44:06,776 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Book Appointment Page Heading
+[INFO ] 2026-06-06 18:44:08,218 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Bangalore Tech Hub Warehouse from Facility dropdown
+[INFO ] 2026-06-06 18:44:08,612 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Blue Dart Express from Carrier dropdown
+[INFO ] 2026-06-06 18:44:09,000 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Transporter from Booked By dropdown
+[INFO ] 2026-06-06 18:44:09,341 com.goodseva.webdriverutils.DriverUtils:13 - Entering 06-06-2026 in Date textbox
+[INFO ] 2026-06-06 18:44:09,707 com.goodseva.webdriverutils.DriverUtils:13 - Entering 06:44 PM in Start Time textbox
+[INFO ] 2026-06-06 18:44:10,092 com.goodseva.webdriverutils.DriverUtils:13 - Entering 07-06-2026 in End Date textbox
+[INFO ] 2026-06-06 18:44:10,369 com.goodseva.webdriverutils.DriverUtils:13 - Entering 06:45 PM in End Time textbox
+[INFO ] 2026-06-06 18:44:10,742 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Outbound (Shipping) from Load Type dropdown
+[INFO ] 2026-06-06 18:44:11,092 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Estimated Duration (minutes) textbox
+[INFO ] 2026-06-06 18:44:11,448 com.goodseva.webdriverutils.DriverUtils:13 - Entering 90 in Estimated Duration (minutes) textbox
+[INFO ] 2026-06-06 18:44:11,696 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Book Appointment button
+[INFO ] 2026-06-06 18:44:11,965 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Scheduled Status
+[INFO ] 2026-06-06 18:44:14,193 com.goodseva.webdriverutils.DriverUtils:71 - Finding Scheduled Status is displayed or not
+[INFO ] 2026-06-06 18:44:14,218 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Mark Arrived button
+[INFO ] 2026-06-06 18:44:14,307 com.goodseva.webdriverutils.DriverUtils:71 - Finding Mark Arrived button is displayed or not
+[INFO ] 2026-06-06 18:44:14,340 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Mark Arrived button
+[INFO ] 2026-06-06 18:44:14,443 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Book Appointment button
+[INFO ] 2026-06-06 18:44:14,573 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Arrived Status
+[INFO ] 2026-06-06 18:44:16,910 com.goodseva.webdriverutils.DriverUtils:71 - Finding Scheduled Status is displayed or not
+[INFO ] 2026-06-06 18:44:16,942 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Start Loading button
+[INFO ] 2026-06-06 18:44:17,043 com.goodseva.webdriverutils.DriverUtils:71 - Finding Start Loading button is displayed or not
+[INFO ] 2026-06-06 18:44:17,073 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Start Loading button
+[INFO ] 2026-06-06 18:44:17,157 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Start Loading button
+[INFO ] 2026-06-06 18:44:17,257 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Arrived Status
+[INFO ] 2026-06-06 18:44:19,642 com.goodseva.webdriverutils.DriverUtils:71 - Finding Scheduled Status is displayed or not
+[INFO ] 2026-06-06 18:44:19,658 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Mark Departed button
+[INFO ] 2026-06-06 18:44:19,740 com.goodseva.webdriverutils.DriverUtils:71 - Finding Mark Departed button is displayed or not
+[INFO ] 2026-06-06 18:44:19,758 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element mark-departed button
+[INFO ] 2026-06-06 18:44:19,825 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on mark-departed button
+[INFO ] 2026-06-06 18:44:19,936 com.goodseva.webdriverutils.DriverUtils:51 - GetFindingting element Arrived Status
+[INFO ] 2026-06-06 18:44:20,022 com.goodseva.webdriverutils.DriverUtils:71 - Finding Scheduled Status is displayed or not
+[INFO ] 2026-06-06 18:44:20,048 com.goodseva.hooks.Hooks:25 - Closing browser
+[INFO ] 2026-06-06 18:44:20,300 com.goodseva.utils.FileUtils:27 - Getting browser from config.properties
+[INFO ] 2026-06-06 18:44:20,300 com.goodseva.utils.FileUtils:28 - browser value is: Chrome
+[INFO ] 2026-06-06 18:44:20,300 com.goodseva.utils.FileUtils:27 - Getting appName from config.properties
+[INFO ] 2026-06-06 18:44:20,300 com.goodseva.utils.FileUtils:28 - appName value is: goodsply
+[INFO ] 2026-06-06 18:44:20,300 com.goodseva.utils.FileUtils:27 - Getting goodsplyURL from config.properties
+[INFO ] 2026-06-06 18:44:20,300 com.goodseva.utils.FileUtils:28 - goodsplyURL value is: https://goodsply.com/
+[INFO ] 2026-06-06 18:44:20,301 com.goodseva.utils.WebDriverHelper:27 - Launching Chrome browser
+[INFO ] 2026-06-06 18:44:21,120 com.goodseva.utils.WebDriverHelper:36 - Navigating to: https://goodsply.com/
+[INFO ] 2026-06-06 18:44:24,227 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on SignIn Link
+[INFO ] 2026-06-06 18:44:25,121 com.goodseva.utils.FileUtils:27 - Getting goodsPlyUserName from config.properties
+[INFO ] 2026-06-06 18:44:25,121 com.goodseva.utils.FileUtils:28 - goodsPlyUserName value is: admin@test.com
+[INFO ] 2026-06-06 18:44:25,121 com.goodseva.webdriverutils.DriverUtils:13 - Entering admin@test.com in Email/Username/Mobile Number textbox
+[INFO ] 2026-06-06 18:44:25,411 com.goodseva.utils.FileUtils:27 - Getting goodsPlyPassword from config.properties
+[INFO ] 2026-06-06 18:44:25,411 com.goodseva.utils.FileUtils:28 - goodsPlyPassword value is: TestPass@2026!
+[INFO ] 2026-06-06 18:44:25,411 com.goodseva.webdriverutils.DriverUtils:13 - Entering TestPass@2026! in Password textbox
+[INFO ] 2026-06-06 18:44:25,708 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on SignIn button
+[INFO ] 2026-06-06 18:44:26,177 com.goodseva.webdriverutils.DriverUtils:71 - Finding Integrity expand icon is displayed or not
+[INFO ] 2026-06-06 18:44:46,214 com.goodseva.webdriverutils.DriverUtils:36 - Clicking on Zones Link
+[INFO ] 2026-06-06 18:44:46,458 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Add Zone button
+[INFO ] 2026-06-06 18:44:49,869 com.goodseva.webdriverutils.DriverUtils:102 - Selecting Test FROM TO from Facility Dropdown
+[INFO ] 2026-06-06 18:44:50,120 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Zone Name
+[INFO ] 2026-06-06 18:44:50,402 com.goodseva.webdriverutils.DriverUtils:13 - Entering Auto_Zone_Name_55032 in Zone Name
+[INFO ] 2026-06-06 18:44:50,668 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Zone Code
+[INFO ] 2026-06-06 18:44:51,017 com.goodseva.webdriverutils.DriverUtils:13 - Entering AUTO_ZONE_CODE_42796 in Zone Code
+[INFO ] 2026-06-06 18:44:51,306 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Shipping from Zone Type Dropdown
+[INFO ] 2026-06-06 18:44:51,751 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Frozen from Temperature Dropdown
+[INFO ] 2026-06-06 18:44:52,132 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Maximum Capacity
+[INFO ] 2026-06-06 18:44:52,479 com.goodseva.webdriverutils.DriverUtils:13 - Entering 100 in Maximum Capacity
+[INFO ] 2026-06-06 18:44:52,741 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Create/Update Zone
+[INFO ] 2026-06-06 18:44:53,031 com.goodseva.webdriverutils.DriverUtils:13 - Entering Auto_Zone_Name_55032 in Search Zone
+[INFO ] 2026-06-06 18:44:54,946 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Zone name in table
+[INFO ] 2026-06-06 18:44:56,198 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Zone code in table
+[INFO ] 2026-06-06 18:44:56,303 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Zone Facility in table
+[INFO ] 2026-06-06 18:44:56,408 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Type in table
+[INFO ] 2026-06-06 18:44:56,526 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Temperature in table
+[INFO ] 2026-06-06 18:44:56,646 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Capacity in table
+[INFO ] 2026-06-06 18:44:56,772 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Status in table
+[INFO ] 2026-06-06 18:44:56,886 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Edit Zone
+[INFO ] 2026-06-06 18:45:00,265 com.goodseva.webdriverutils.DriverUtils:102 - Selecting Export Logistics Facility from Facility Dropdown
+[INFO ] 2026-06-06 18:45:00,477 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Zone Name
+[INFO ] 2026-06-06 18:45:00,722 com.goodseva.webdriverutils.DriverUtils:13 - Entering Auto_Zone_Update_Name_40698 in Zone Name
+[INFO ] 2026-06-06 18:45:00,935 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Zone Code
+[INFO ] 2026-06-06 18:45:01,200 com.goodseva.webdriverutils.DriverUtils:13 - Entering AUTO_ZONE_UPDATED_CODE_39559 in Zone Code
+[INFO ] 2026-06-06 18:45:01,385 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Storage from Zone Type Dropdown
+[INFO ] 2026-06-06 18:45:01,714 com.goodseva.webdriverutils.DriverUtils:91 - Selecting Chilled from Temperature Dropdown
+[INFO ] 2026-06-06 18:45:02,015 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Maximum Capacity
+[INFO ] 2026-06-06 18:45:02,302 com.goodseva.webdriverutils.DriverUtils:13 - Entering 200 in Maximum Capacity
+[INFO ] 2026-06-06 18:45:02,480 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Active Zone checkbox
+[INFO ] 2026-06-06 18:45:02,642 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Create/Update Zone
+[INFO ] 2026-06-06 18:45:02,817 com.goodseva.webdriverutils.DriverUtils:13 - Entering Auto_Zone_Update_Name_40698 in Search Zone
+[INFO ] 2026-06-06 18:45:05,019 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Zone name in table
+[INFO ] 2026-06-06 18:45:06,594 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Zone code in table
+[INFO ] 2026-06-06 18:45:06,703 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Zone Facility in table
+[INFO ] 2026-06-06 18:45:06,794 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Type in table
+[INFO ] 2026-06-06 18:45:06,907 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Temperature in table
+[INFO ] 2026-06-06 18:45:06,990 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Capacity in table
+[INFO ] 2026-06-06 18:45:07,090 com.goodseva.webdriverutils.DriverUtils:44 - Getting text from Status in table
+[INFO ] 2026-06-06 18:45:07,191 com.goodseva.webdriverutils.DriverUtils:29 - Clicking on Delete Zone
+[INFO ] 2026-06-06 18:45:10,399 com.goodseva.webdriverutils.DriverUtils:13 - Entering Auto_Zone_Update_Name_40698 in Search Zone
+[INFO ] 2026-06-06 18:45:30,993 com.goodseva.hooks.Hooks:25 - Closing browser
