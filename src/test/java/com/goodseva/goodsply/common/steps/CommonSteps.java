@@ -14,6 +14,8 @@ public class CommonSteps {
             commonPage.openAppointmentPage();
         } else if (page.equalsIgnoreCase("Zones")) {
             commonPage.openZonesPage();
+        } else if (page.equalsIgnoreCase("Integrity Hub")) {
+            commonPage.openIntegrityHubPage();
         } else {
             Assert.assertTrue(false, "Invalid Page name provided, Provided page name is: " + page);
         }

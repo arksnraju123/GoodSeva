@@ -36,6 +36,9 @@ public class CommonPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Zones']")
     private WebElement zonesLink;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Integrity Hub']")
+    private WebElement integrityHub;
+
     public void clickOnSignIn() {
         click(signIn, "SignIn Link");
     }
@@ -47,23 +50,25 @@ public class CommonPage extends DriverUtils {
         click(signInButton, "SignIn button");
     }
 
-    private boolean isIntegrityExpand(){
-        return isElementDisplayed(integrityExpand, "Integrity expand icon");
-    }
-
-    public void openAppointmentPage(){
-        if(isIntegrityExpand()){
+    private void expandIntegrity(){
+        if(isElementDisplayed(integrityExpand, "Integrity expand icon")){
             click(integrityExpand, "Expand Integrity");
             WaitUtils.waitForPageLoads();
         }
+    }
+
+    public void openAppointmentPage(){
+        expandIntegrity();
         jsClick(appointmentsLink, "Appointments Link");
     }
 
     public void openZonesPage(){
-        if(isIntegrityExpand()){
-            click(integrityExpand, "Expand Integrity");
-            WaitUtils.waitForPageLoads();
-        }
+        expandIntegrity();
         jsClick(zonesLink, "Zones Link");
+    }
+
+    public void openIntegrityHubPage(){
+        expandIntegrity();
+        jsClick(integrityHub, "Integrity Hub Link");
     }
 }

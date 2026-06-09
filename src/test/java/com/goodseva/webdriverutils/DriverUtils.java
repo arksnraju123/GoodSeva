@@ -48,7 +48,7 @@ public class DriverUtils extends WebDriverHelper {
 	}
 
 	public WebElement getElement(By element, String elementName) {
-		log.info("GetFindingting element "+elementName);
+		log.info("Get element "+elementName);
 		WaitUtils.waitForElementClickable(getDriver().findElement(element));
 		highlightElement(getDriver().findElement(element));
 		return getDriver().findElement(element);
@@ -133,6 +133,18 @@ public class DriverUtils extends WebDriverHelper {
 
 	public void acceptAlert(){
 		getDriver().switchTo().alert().accept();
+	}
+
+	public void navigateBack(){
+		getDriver().navigate().back();
+	}
+
+	public String getPageTitle(){
+		return getDriver().getTitle();
+	}
+
+	public String getPageURL(){
+		return getDriver().getCurrentUrl();
 	}
 }
 
