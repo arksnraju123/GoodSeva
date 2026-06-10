@@ -1,7 +1,7 @@
 @GoodsPlyRegression
 Feature: Integrity Hub - Single console for warehouse, inventory, and fulfillment. Same data, three workflows.
 
-  Background: Login into GoodsPly and navigate to Appointments page
+  Background: Login into GoodsPly and navigate to Integrity Hub page
     Given User login into GoodsPly
     And User open Integrity Hub page
 

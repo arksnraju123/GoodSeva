@@ -17,6 +17,9 @@ public class ZonesPage extends DriverUtils {
         PageFactory.initElements(webDriver, this);
     }
 
+    @FindBy(how = How.XPATH, using = "//div[text()='Saved Zones']/span")
+    private WebElement totalZones;
+
     @FindBy(how = How.XPATH, using = "//button[@data-testid='button-add-zone']")
     private WebElement addZoneButton;
 
@@ -142,4 +145,8 @@ public class ZonesPage extends DriverUtils {
         Assert.assertEquals(allZones.size(), 0, "Zone has not deleted");
     }
 
+    public String getTotalZones() throws InterruptedException {
+        Thread.sleep(2000);
+        return getText(totalZones, "Total Zones").replaceAll("\\D+", "");
+    }
 }

@@ -16,6 +16,8 @@ public class CommonSteps {
             commonPage.openZonesPage();
         } else if (page.equalsIgnoreCase("Integrity Hub")) {
             commonPage.openIntegrityHubPage();
+        } else if (page.equalsIgnoreCase("WMS Dashboard")) {
+            commonPage.openWMSDashboardPage();
         } else {
             Assert.assertTrue(false, "Invalid Page name provided, Provided page name is: " + page);
         }
