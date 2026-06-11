@@ -32,7 +32,7 @@ public class WaitUtils extends WebDriverHelper {
 		wait.until(webDriver -> js.executeScript("return document.readyState").equals("complete"));
 	}
 
-	public static void waitForPageLoads(WebElement element) {
+	public static void waitForVisibilityOfElement(WebElement element) {
 		wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
 		wait.until(ExpectedConditions.visibilityOf(element));
 	}
@@ -56,5 +56,22 @@ public class WaitUtils extends WebDriverHelper {
 				return false;
 			}
 		});
+	}
+
+    public static void waitForElement(By locator) {
+		wait = new WebDriverWait(getDriver(), Duration.ofSeconds(20));
+		WebElement ele = wait.until(driver1 -> {
+			try {
+				WebElement el = driver1.findElement(locator);
+				return el.isDisplayed() ? el : null;
+			} catch (StaleElementReferenceException e) {
+				return null; // retry until stable
+			}
+		});
+    }
+
+	public static void invisibilityOf(WebElement element) {
+		wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.invisibilityOf(element));
 	}
 }

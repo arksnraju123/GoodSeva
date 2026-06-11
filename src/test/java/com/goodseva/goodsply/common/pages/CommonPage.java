@@ -3,7 +3,6 @@ package com.goodseva.goodsply.common.pages;
 import com.goodseva.utils.FileUtils;
 import com.goodseva.webdriverutils.DriverUtils;
 import com.goodseva.webdriverutils.WaitUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -53,6 +52,12 @@ public class CommonPage extends DriverUtils {
 
     @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Stock Overview']")
     private WebElement stockOverview;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Slot Booking']")
+    private WebElement slotBooking;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Booking Management']")
+    private WebElement bookingManagement;
 
     public void clickOnSignIn() {
         click(signIn, "SignIn Link");
@@ -116,5 +121,15 @@ public class CommonPage extends DriverUtils {
     public void openStockOverviewPage() {
         expandIntegrity();
         jsClick(stockOverview, "Stock Overview Link");
+    }
+
+    public void openSlotBookingPage() {
+        expandIntegrity();
+        jsClick(slotBooking, "Slot Booking Link");
+    }
+
+    public void openBookingManagementPage() {
+        expandIntegrity();
+        jsClick(bookingManagement, "Booking Management Link");
     }
 }

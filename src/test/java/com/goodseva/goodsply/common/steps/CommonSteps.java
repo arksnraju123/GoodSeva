@@ -18,6 +18,10 @@ public class CommonSteps {
             commonPage.openIntegrityHubPage();
         } else if (page.equalsIgnoreCase("WMS Dashboard")) {
             commonPage.openWMSDashboardPage();
+        } else if (page.equalsIgnoreCase("Slot Booking")) {
+            commonPage.openSlotBookingPage();
+        } else if (page.equalsIgnoreCase("Booking Management")) {
+            commonPage.openBookingManagementPage();
         } else {
             Assert.assertTrue(false, "Invalid Page name provided, Provided page name is: " + page);
         }

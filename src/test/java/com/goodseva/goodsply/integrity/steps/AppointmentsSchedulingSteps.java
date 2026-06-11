@@ -22,7 +22,6 @@ public class AppointmentsSchedulingSteps {
         } else {
             Assert.assertTrue(false, "Invalid status has provided. Provided status is: " + status);
         }
-
     }
 
     @Then("^Verify (.*) button$")
