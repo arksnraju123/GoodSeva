@@ -6,145 +6,173 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+
+import static com.goodseva.webdriverutils.WaitUtils.wait;
 
 public class DriverUtils extends WebDriverHelper {
-	public static Logger log = LogManager.getLogger();
-	public void enterText(WebElement element, String text, String elementName) {
-		log.info("Entering "+text+" in "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		element.clear();
-		element.sendKeys(text);
-	}
+    public static Logger log = LogManager.getLogger();
 
-	public void enterTextUsingJS(WebElement element, String text, String elementName) {
-		log.info("Entering "+text+" in "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		JavascriptExecutor js = (JavascriptExecutor) getDriver();
-		js.executeScript("arguments[0].value='" + text + "';", element);
-	}
+    public void enterText(WebElement element, String text, String elementName) {
+        log.info("Entering " + text + " in " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        element.clear();
+        element.sendKeys(text);
+    }
 
-	public void click(WebElement element, String elementName) {
-		log.info("Clicking on "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		element.click();
-	}
+    public void enterTextUsingJS(WebElement element, String text, String elementName) {
+        log.info("Entering " + text + " in " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("arguments[0].value='" + text + "';", element);
+    }
 
-	public void jsClick(WebElement element, String elementName) {
-		log.info("Clicking on "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		JavascriptExecutor js = (JavascriptExecutor) WebDriverHelper.getDriver();
-		js.executeScript("arguments[0].click();", element);
-	}
-	
-	public String getText(WebElement element, String elementName) {
-		log.info("Getting text from "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		return element.getText().trim();
-	}
+    public void click(WebElement element, String elementName) {
+        log.info("Clicking on " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        element.click();
+    }
 
-	public WebElement getElement(By element, String elementName) {
-		log.info("Get element "+elementName);
-		WaitUtils.waitForElementClickable(getDriver().findElement(element));
-		highlightElement(getDriver().findElement(element));
-		return getDriver().findElement(element);
-	}
+    public void clickUntil(WebElement element1, By element2, String elementName) {
+        log.info("Clicking on " + elementName);
+        WaitUtils.waitForElementClickable(element1);
+        highlightElement(element1);
+        element1.click();
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(5));
+        wait.pollingEvery(Duration.ofMillis(500));
+        try {
+            wait.until(driver1 -> {
+                try {
+                    WebElement el = driver1.findElement(element2); // replace with your locator
+                    return el.isDisplayed();
+                } catch (NoSuchElementException | StaleElementReferenceException e) {
+                    element1.click();
+                    return false;
+                }
+            });
+        } catch (Exception ignored) {
+        }
+    }
 
-	public String getTextBoxValue(WebElement element, String elementName) {
-		log.info("Getting text from textbox "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		return element.getAttribute("value").trim();
-	}
-	
-	public void highlightElement(WebElement element) {
-		if (getDriver() instanceof JavascriptExecutor) {
-	        ((JavascriptExecutor)getDriver()).executeScript("arguments[0].style.border='2px solid red'", element);
-	    }
-	}
-	
-	public boolean isElementDisplayed(WebElement element, String elementName) {
-		log.info("Finding "+elementName+" is displayed or not");
-		try {
-			//WaitUtils.waitForElementClickable(element);
-			if(element.isDisplayed()) {
-				highlightElement(element);
-				return true;
-			}
-		}catch(Exception e) {
-		}
-		return false;
-	}
-	
-	public void mouseHover(WebElement element, String elementName) {
-		log.info("Mouse hover on "+elementName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		new Actions(getDriver()).moveToElement(element).build().perform();
-	}
-	
-	public void selectDropdownValueByVisibleText(WebElement element, String dropdownValue, String dropdownName) {
-		log.info("Selecting "+dropdownValue+" from "+dropdownName);
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		Select select = new Select(element);
-		select.selectByVisibleText(dropdownValue);
-	}
+    public void jsClick(WebElement element, String elementName) {
+        log.info("Clicking on " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        JavascriptExecutor js = (JavascriptExecutor) WebDriverHelper.getDriver();
+        js.executeScript("arguments[0].click();", element);
+    }
 
-	public void selectDropdownValueByIndex(WebElement element, String index, String dropdownName) {
-		WaitUtils.waitForElementClickable(element);
-		highlightElement(element);
-		Select select = new Select(element);
-		log.info("Selecting "+select.getOptions().get(Integer.parseInt(index)).getText()+" from "+dropdownName);
-		select.selectByIndex(Integer.parseInt(index));
-	}
+    public String getText(WebElement element, String elementName) {
+        log.info("Getting text from " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        return element.getText().trim();
+    }
 
-	public String getDropdownValueByIndex(WebElement element, String index){
-		return new Select(element).getOptions().get(Integer.parseInt(index)).getText();
-	}
+    public WebElement getElement(By element, String elementName) {
+        log.info("Get element " + elementName);
+        WaitUtils.waitForElementClickable(getDriver().findElement(element));
+        highlightElement(getDriver().findElement(element));
+        return getDriver().findElement(element);
+    }
 
-	public void pressDownArrow(){
-		Actions act = new Actions(getDriver());
-		act.sendKeys(Keys.chord(Keys.ARROW_DOWN)).build().perform();
-	}
-	public void pressLeftArrow(){
-		Actions act = new Actions(getDriver());
-		act.sendKeys(Keys.chord(Keys.ARROW_LEFT)).build().perform();
-	}
+    public String getTextBoxValue(WebElement element, String elementName) {
+        log.info("Getting text from textbox " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        return element.getAttribute("value").trim();
+    }
 
-	public void pressEnter(){
-		Actions act = new Actions(getDriver());
-		act.sendKeys(Keys.chord(Keys.ENTER)).build().perform();
-	}
+    public void highlightElement(WebElement element) {
+        if (getDriver() instanceof JavascriptExecutor) {
+            ((JavascriptExecutor) getDriver()).executeScript("arguments[0].style.border='2px solid red'", element);
+        }
+    }
 
-	public void clearData(WebElement element, String fieldName){
-		click(element, fieldName);
-		element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-		element.sendKeys(Keys.DELETE);
-	}
+    public boolean isElementDisplayed(WebElement element, String elementName) {
+        log.info("Finding " + elementName + " is displayed or not");
+        try {
+            //WaitUtils.waitForElementClickable(element);
+            if (element.isDisplayed()) {
+                highlightElement(element);
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return false;
+    }
 
-	public static String getAttribute(WebElement element, String attributeName){
-		return element.getAttribute(attributeName);
-	}
+    public void mouseHover(WebElement element, String elementName) {
+        log.info("Mouse hover on " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        new Actions(getDriver()).moveToElement(element).build().perform();
+    }
 
-	public void acceptAlert(){
-		getDriver().switchTo().alert().accept();
-	}
+    public void selectDropdownValueByVisibleText(WebElement element, String dropdownValue, String dropdownName) {
+        log.info("Selecting " + dropdownValue + " from " + dropdownName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        Select select = new Select(element);
+        select.selectByVisibleText(dropdownValue);
+    }
 
-	public void navigateBack(){
-		getDriver().navigate().back();
-	}
+    public void selectDropdownValueByIndex(WebElement element, String index, String dropdownName) {
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
+        Select select = new Select(element);
+        log.info("Selecting " + select.getOptions().get(Integer.parseInt(index)).getText() + " from " + dropdownName);
+        select.selectByIndex(Integer.parseInt(index));
+    }
 
-	public String getPageTitle(){
-		return getDriver().getTitle();
-	}
+    public String getDropdownValueByIndex(WebElement element, String index) {
+        return new Select(element).getOptions().get(Integer.parseInt(index)).getText();
+    }
 
-	public String getPageURL(){
-		return getDriver().getCurrentUrl();
-	}
+    public void pressDownArrow() {
+        Actions act = new Actions(getDriver());
+        act.sendKeys(Keys.chord(Keys.ARROW_DOWN)).build().perform();
+    }
+
+    public void pressLeftArrow() {
+        Actions act = new Actions(getDriver());
+        act.sendKeys(Keys.chord(Keys.ARROW_LEFT)).build().perform();
+    }
+
+    public void pressEnter() {
+        Actions act = new Actions(getDriver());
+        act.sendKeys(Keys.chord(Keys.ENTER)).build().perform();
+    }
+
+    public void clearData(WebElement element, String fieldName) {
+        click(element, fieldName);
+        element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        element.sendKeys(Keys.DELETE);
+    }
+
+    public static String getAttribute(WebElement element, String attributeName) {
+        return element.getAttribute(attributeName);
+    }
+
+    public void acceptAlert() {
+        getDriver().switchTo().alert().accept();
+    }
+
+    public void navigateBack() {
+        getDriver().navigate().back();
+    }
+
+    public String getPageTitle() {
+        return getDriver().getTitle();
+    }
+
+    public String getPageURL() {
+        return getDriver().getCurrentUrl();
+    }
 }
 

@@ -1,4 +1,4 @@
-@GoodsPlyRegression
+@GoodsPlyRegression @WMSDashboard
 Feature: Warehouse Management System Dashboard
 
   Background: Login into GoodsPly and navigate to WMSDashboard page

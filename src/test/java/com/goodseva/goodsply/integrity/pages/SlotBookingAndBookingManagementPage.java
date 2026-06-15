@@ -81,6 +81,12 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//textarea[@data-testid='textarea-rejection-reason']/following::button[1]")
     private WebElement confirmRejectionBtn;
 
+    @FindBy(how = How.XPATH, using = "//textarea[@data-testid='textarea-approval-comments']")
+    private WebElement popUpApproveTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//textarea[@data-testid='textarea-approval-comments']/following::button[1]")
+    private WebElement confirmApproveBtn;
+
     @FindBy(how = How.XPATH, using = "//div[@role='dialog']//div[@data-state='active']//p[1]")
     private WebElement popUpVehicleNum;
 
@@ -123,6 +129,18 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//button[@data-component-name='DialogPrimitive.Close']")
     private WebElement closePopup;
 
+    @FindBy(how = How.XPATH, using = "(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[1]//p[2]")
+    private WebElement totalPending;
+
+    @FindBy(how = How.XPATH, using = "(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[2]//p[2]")
+    private WebElement totalApproved;
+
+    @FindBy(how = How.XPATH, using = "(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[3]//p[2]")
+    private WebElement totalRejected;
+
+    @FindBy(how = How.XPATH, using = "(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[4]//p[2]")
+    private WebElement totalActions;
+
     public void createNewSlot(String vehicleNum, String vehicleTypeValue, String driverNameValue, String licenseNumberValue, String mobileNum, String expectedArrivalDt, String arrivalTimeValue, String departureTimeValue, String loadTypeValue, String goodsTypeValue) throws InterruptedException {
         vehicleNum = vehicleNum.concat(StringUtils.getRandomNumber(1000, 9999));
         driverNameValue = driverNameValue.concat(StringUtils.getRandomNumber());
@@ -142,6 +160,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
             for (int i = 0; i < calendarDates.size(); i++) {
                 if (calendarDates.get(i).getText().equalsIgnoreCase(String.valueOf(date))) {
                     click(calendarDates.get(i), "calendar date");
+                    break;
                 }
             }
         }
@@ -170,6 +189,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
 
     public void verifySlotBookingDetails(String status) {
         String vehicleNum = globalVariables.get("VehicleNumber");
+        WaitUtils.waitForElement(By.xpath("//span[text()='" + vehicleNum + "']/following::div[1]"));
         String actualStatus = getText(getElement(By.xpath("//span[text()='" + vehicleNum + "']/following::div[1]"), "Vehicle number"), "Driver Name");
         Assert.assertEquals(actualStatus, status, "Status is wrong");
         String driverName = getText(getElement(By.xpath("//span[text()='" + vehicleNum + "']/following::div[2]/div[1]"), "Driver Namer"), "Driver Name");
@@ -181,12 +201,11 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
     }
 
     public void openSlot() {
-        click(getElement(By.xpath("//span[text()='" + globalVariables.get("VehicleNumber") + "']"), "Vehicle number"), "Vehicle Slot");
-        WaitUtils.waitForPageLoads();
-        WaitUtils.waitForElement(By.xpath("//div[@role='dialog']//h2"));
+        clickUntil(getElement(By.xpath("//span[text()='" + globalVariables.get("VehicleNumber") + "']"), "Vehicle number"), By.xpath("//div[@role='dialog']//h2"), "Vehicle Slot");
     }
 
     public void verifyBookingDetailsPopup(String status) throws InterruptedException {
+        WaitUtils.waitForElement(By.xpath("//div[@role='dialog']//div[@data-component-name='Badge']"));
         String popUpHeaderVehNumber = getText(popUpHeaderVehNum, "Popup Heading Vehicle Number");
         Assert.assertTrue(popUpHeaderVehNumber.contains(globalVariables.get("VehicleNumber")), "Vehicle Number is wrong on popup. Expected: " + globalVariables.get("VehicleNumber") + ", Actual: " + popUpHeaderVehNumber);
         String popUpStat = getText(popUpStatus, "Popup Status");
@@ -221,14 +240,21 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         Assert.assertEquals(popUpGoodsTp.toLowerCase(), globalVariables.get("GoodsType").toLowerCase(), "Goods Type is wrong on popup");
     }
 
-    public void rejectBooking() {
-        click(popUpRejectBtn, "Reject booking button");
-        enterText(popUpRejectTxtBox, StringUtils.getRandomString(10), "Popup rejection message");
-        click(confirmRejectionBtn, "Confirm Reject booking button");
-        WaitUtils.invisibilityOf(popUpDriverName);
+    public void approveRejectBooking(String action) throws InterruptedException {
+        if (action.equalsIgnoreCase("Reject")) {
+            click(popUpRejectBtn, "Reject booking button");
+            enterText(popUpRejectTxtBox, StringUtils.getRandomString(10), "Popup rejection message");
+            click(confirmRejectionBtn, "Confirm Reject booking button");
+        } else {
+            click(popUpApproveBtn, "Approve booking button");
+            enterText(popUpApproveTxtBox, StringUtils.getRandomString(10), "Popup Approve message");
+            click(confirmApproveBtn, "Confirm Approve booking button");
+        }
+        WaitUtils.waitForElementNotExist(By.xpath("(//div[@role='dialog']//div[@data-state='active']//p)[1]"));
     }
 
     public void verifyBookingDetailsPopupAfterReject(String status) throws InterruptedException {
+        WaitUtils.waitForElement(By.xpath("//div[@role='dialog']//div[@data-component-name='Badge']"));
         String popUpHeaderVehNumber = getText(popUpHeaderVehNum, "Popup Heading Vehicle Number");
         Assert.assertTrue(popUpHeaderVehNumber.contains(globalVariables.get("VehicleNumber")), "Vehicle Number is wrong on popup. Expected: " + globalVariables.get("VehicleNumber") + ", Actual: " + popUpHeaderVehNumber);
         String popUpStat = getText(popUpStatus, "Popup Status");
@@ -261,5 +287,38 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         Assert.assertEquals(popUpGoodsTp.toLowerCase(), globalVariables.get("GoodsType").toLowerCase(), "Goods Type is wrong on popup");
         click(closePopup, "Close popup");
         Thread.sleep(1000);
+    }
+
+    public void getAllActionValues() {
+        WaitUtils.waitForElement(By.xpath("(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[1]//p[2]"));
+        globalVariables.put("TotalPending", getText(totalPending, "Total Pending"));
+        globalVariables.put("TotalApproved", getText(totalApproved, "Total Approved"));
+        globalVariables.put("TotalRejected", getText(totalRejected, "Total Rejected"));
+        globalVariables.put("TotalActions", getText(totalActions, "Total Actions"));
+    }
+
+    public void verifyPendingAndRejected(String action1, String action2) {
+        WaitUtils.waitForElement(By.xpath("(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[1]//p[2]"));
+        int actualPending = Integer.parseInt(getText(totalPending, "Total Pending"));
+        int expectedPending = Integer.parseInt(globalVariables.get("TotalPending")) - 1;
+        Assert.assertEquals(actualPending, expectedPending, "Pending count has not updated when Reject");
+        if (action1.equalsIgnoreCase("Rejected")) {
+            int actualReject = Integer.parseInt(getText(totalRejected, "Total Rejected"));
+            int expectedRejected = Integer.parseInt(globalVariables.get("TotalRejected")) + 1;
+            Assert.assertEquals(actualReject, expectedRejected, "Rejected count has not updated when Reject");
+        }
+        if (action1.equalsIgnoreCase("Approved")) {
+            int actualApproved = Integer.parseInt(getText(totalApproved, "Total Approved"));
+            int expectedApproved = Integer.parseInt(globalVariables.get("TotalApproved")) + 1;
+            Assert.assertEquals(actualApproved, expectedApproved, "Approved count has not updated when Approve");
+        }
+    }
+
+    public void verifyTotal() {
+        WaitUtils.waitForElement(By.xpath("(//div[@data-testid='content-booking-mgmt']//div[@data-component-name='Card'])[1]//p[2]"));
+        int total1 = Integer.parseInt(globalVariables.get("TotalPending"));
+        int total2 = Integer.parseInt(globalVariables.get("TotalApproved"));
+        int total3 = Integer.parseInt(globalVariables.get("TotalRejected"));
+        Assert.assertEquals(Integer.parseInt(globalVariables.get("TotalActions")), total1 + total2 + total3, "Total count of Pending, Approved and Rejected is wrong");
     }
 }

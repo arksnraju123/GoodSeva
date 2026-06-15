@@ -46,9 +46,9 @@ public class SlotBookingAndBookingManagementSteps {
         slotBookingAndBookingManagementPage.openSlot();
     }
 
-    @When("^User Reject the booking on Booking Details popup$")
-    public void rejectBooking() {
-        slotBookingAndBookingManagementPage.rejectBooking();
+    @When("^User (.*) the booking on Booking Details popup$")
+    public void rejectBooking(String action) throws InterruptedException {
+        slotBookingAndBookingManagementPage.approveRejectBooking(action);
     }
 
     @When("^Verify all details on Booking Details popup after reject$")
@@ -57,5 +57,20 @@ public class SlotBookingAndBookingManagementSteps {
         for (Map<String, String> row : data) {
             slotBookingAndBookingManagementPage.verifyBookingDetailsPopupAfterReject(row.get("Status"));
         }
+    }
+
+    @When("^User get total total Pending, Approved, Rejected and Total$")
+    public void getActionsTotal() {
+        slotBookingAndBookingManagementPage.getAllActionValues();
+    }
+
+    @Then("^Verify Pending and (.*) after (.*)$")
+    public void verifyPendingAndRejected(String action1, String action2) {
+        slotBookingAndBookingManagementPage.verifyPendingAndRejected(action1, action2);
+    }
+
+    @Then("^Verify slot booking total$")
+    public void verifyTotal() {
+        slotBookingAndBookingManagementPage.verifyTotal();
     }
 }

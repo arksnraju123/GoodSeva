@@ -1,4 +1,4 @@
-@GoodsPlyRegression
+@GoodsPlyRegression @IntegrityHub
 Feature: Integrity Hub - Single console for warehouse, inventory, and fulfillment. Same data, three workflows.
 
   Background: Login into GoodsPly and navigate to Integrity Hub page

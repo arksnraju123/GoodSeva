@@ -1,4 +1,4 @@
-@GoodsPlyRegression
+@GoodsPlyRegression @Appointments
 Feature: Manage dock appointments and scheduling
 
   Background: Login into GoodsPly and navigate to Appointments page

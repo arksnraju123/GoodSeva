@@ -1,4 +1,4 @@
-@GoodsPlyRegression
+@GoodsPlyRegression @Zones
 Feature: Manage Zones Management
 
   Background: Login into GoodsPly and navigate to Zones page
