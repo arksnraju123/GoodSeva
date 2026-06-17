@@ -22,6 +22,10 @@ public class CommonSteps {
             commonPage.openSlotBookingPage();
         } else if (page.equalsIgnoreCase("Booking Management")) {
             commonPage.openBookingManagementPage();
+        } else if (page.equalsIgnoreCase("Check-In")) {
+            commonPage.openCheckInPage();
+        } else if (page.equalsIgnoreCase("Velocity Hub")) {
+            commonPage.openVelocityHubPage();
         } else {
             Assert.assertTrue(false, "Invalid Page name provided, Provided page name is: " + page);
         }

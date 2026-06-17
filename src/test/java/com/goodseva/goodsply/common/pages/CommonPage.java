@@ -59,6 +59,12 @@ public class CommonPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Booking Management']")
     private WebElement bookingManagement;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Check-In']")
+    private WebElement checkIn;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Velocity']/following::span[text()='Velocity Hub']")
+    private WebElement velocityHub;
+
     public void clickOnSignIn() {
         click(signIn, "SignIn Link");
     }
@@ -131,5 +137,14 @@ public class CommonPage extends DriverUtils {
     public void openBookingManagementPage() {
         expandIntegrity();
         jsClick(bookingManagement, "Booking Management Link");
+    }
+
+    public void openCheckInPage() {
+        expandIntegrity();
+        jsClick(checkIn, "Check-in Link");
+    }
+
+    public void openVelocityHubPage() {
+        jsClick(velocityHub, "Velocity Hub Link");
     }
 }
