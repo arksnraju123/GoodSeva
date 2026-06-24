@@ -12,6 +12,7 @@ Feature: One console for all four transport modes. Pick a mode to scope, or jump
       | Road                   | tms?tab=dashboard     |
       | Rail                   | yard-rake             |
       | Sea                    | maritime              |
+      # Air is navigating to Book Transport page
       | Air                    | multimodal            |
       | Live Map               | intelligence/live     |
       | Control Tower          | control-tower         |
@@ -31,8 +32,6 @@ Feature: One console for all four transport modes. Pick a mode to scope, or jump
       | Rate Calculator        | rates                 |
       | Compliance             | compliance            |
       | Driver App             | driver-mobile         |
-      #Mobile Fleet is navigating to different page
-      | Mobile Fleet           | fleet                 |
       | Rake Arrival Predictor | yard-rake/predictions |
       | Yard Allocation        | yard-rake/allocation  |
       | Port Congestion        | congestion            |

@@ -69,8 +69,8 @@ public class AppointmentsPage extends DriverUtils {
     public void enterScheduleDetails(){
         String startTimeValue = DateTimeUtils.getCurrentTime("hh:mm a");
         String endTimeValue = DateTimeUtils.getFutureTimeInMinutes(1, "hh:mm a");
-        globalVariables.put("startTime", DateTimeUtils.convertTime(startTimeValue, "hh:mm a", "h:mm a"));
-        globalVariables.put("endTime", DateTimeUtils.convertTime(endTimeValue, "hh:mm a", "h:mm a"));
+        globalVariables.put("startTime", DateTimeUtils.convertTime(startTimeValue, "hh:mm a", "h:mm a").toUpperCase());
+        globalVariables.put("endTime", DateTimeUtils.convertTime(endTimeValue, "hh:mm a", "h:mm a").toUpperCase());
         enterText(date, DateTimeUtils.getFutureDate(0, "dd-MM-yyyy"), "Date textbox");
         enterText(startTime, startTimeValue, "Start Time textbox");
         pressEnter();
