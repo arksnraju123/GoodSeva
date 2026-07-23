@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class WaitUtils extends WebDriverHelper {
     static WebDriverWait wait;
@@ -83,6 +81,35 @@ public class WaitUtils extends WebDriverHelper {
                 }
             });
         } catch (Exception e) {
+        }
+    }
+
+    public static WebElement waitForElementDisplayed(By elementValue, String message) {
+        WebElement element = null;
+        int attempts = 0;
+
+        while (attempts < 5) {
+            try {
+                System.out.println("attempts: "+attempts);
+                element = getDriver().findElement(elementValue);
+                System.out.println("Element found");
+                if (element.isDisplayed()) {
+                    System.out.println("Element displayed");
+                    return element;
+                }
+            } catch (Exception ignored) {
+                System.out.println("Inside catch");
+            }
+            attempts++;
+        }
+        throw new RuntimeException("Element never stabilized after " + 5 + " retries: " + message);
+    }
+
+    public static void sleepFor(int time){
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.goodseva.webdriverutils.WaitUtils.wait;
 
@@ -38,6 +39,13 @@ public class DriverUtils extends WebDriverHelper {
         element.click();
     }
 
+    public void click(By element, String elementName) {
+        log.info("Clicking on " + elementName);
+        WaitUtils.waitForElementClickable(getDriver().findElement(element));
+        highlightElement(getDriver().findElement(element));
+        getDriver().findElement(element).click();
+    }
+
     public void clickUntil(WebElement element1, By element2, String elementName) {
         log.info("Clicking on " + elementName);
         WaitUtils.waitForElementClickable(element1);
@@ -65,6 +73,12 @@ public class DriverUtils extends WebDriverHelper {
         highlightElement(element);
         JavascriptExecutor js = (JavascriptExecutor) WebDriverHelper.getDriver();
         js.executeScript("arguments[0].click();", element);
+    }
+
+    public void mouseClick(WebElement element, String elementName) {
+        log.info("Clicking on " + elementName);
+        WaitUtils.waitForElementClickable(element);
+        new Actions(getDriver()).click(element).build().perform();
     }
 
     public String getText(WebElement element, String elementName) {
@@ -149,6 +163,11 @@ public class DriverUtils extends WebDriverHelper {
         act.sendKeys(Keys.chord(Keys.ENTER)).build().perform();
     }
 
+    public void pressEscape() {
+        Actions act = new Actions(getDriver());
+        act.sendKeys(Keys.chord(Keys.ESCAPE)).build().perform();
+    }
+
     public void clearData(WebElement element, String fieldName) {
         click(element, fieldName);
         element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
@@ -173,6 +192,18 @@ public class DriverUtils extends WebDriverHelper {
 
     public String getPageURL() {
         return getDriver().getCurrentUrl();
+    }
+
+    public void selectDropdownValue(WebElement dropdownName, List<WebElement> dropdownOptions, String dropdownOptionToSelect, String message){
+        click(dropdownName, message);
+        WaitUtils.sleepFor(2000);
+        for (int i=0; i<dropdownOptions.size(); i++){
+            if(dropdownOptions.get(i).getText().trim().equalsIgnoreCase(dropdownOptionToSelect)){
+                pressEnter();
+                break;
+            }
+            pressDownArrow();
+        }
     }
 }
 

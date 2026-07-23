@@ -1,6 +1,7 @@
 package com.goodseva.goodsply.integrity.pages;
 
 import com.goodseva.webdriverutils.DriverUtils;
+import com.goodseva.webdriverutils.WaitUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,7 @@ public class ProductsAndSKUsPage extends DriverUtils {
     private WebElement totalProducts;
 
     public String getTotalProducts() throws InterruptedException {
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
         return getText(totalProducts, "Total Products").split("\\(")[1].replaceAll("\\D+", "");
     }
 }

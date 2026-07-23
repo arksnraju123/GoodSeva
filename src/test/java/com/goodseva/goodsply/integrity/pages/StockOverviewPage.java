@@ -1,6 +1,7 @@
 package com.goodseva.goodsply.integrity.pages;
 
 import com.goodseva.webdriverutils.DriverUtils;
+import com.goodseva.webdriverutils.WaitUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,7 @@ public class StockOverviewPage extends DriverUtils {
     private WebElement totalQuantity;
 
     public String getTotalQuantity() throws InterruptedException {
-        Thread.sleep(3000);
+        WaitUtils.sleepFor(3000);
         return getText(totalQuantity, "Total Quantity").replaceAll("\\D+", "");
     }
 }

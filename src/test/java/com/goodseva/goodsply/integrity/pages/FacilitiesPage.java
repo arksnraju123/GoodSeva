@@ -17,7 +17,7 @@ public class FacilitiesPage extends DriverUtils {
     private WebElement totalFacilities;
 
     public String getTotalFacilities() throws InterruptedException {
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
         return getText(totalFacilities, "Total Facilities").replaceAll("\\D+", "");
     }
 }

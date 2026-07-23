@@ -74,7 +74,7 @@ public class CheckInPage extends DriverUtils {
         click(quickCheckInButton, "Quick Checkin button");
         WaitUtils.waitForVisibilityOfElement(appointmentDDown);
         click(appointmentDDown, "Appointment dropdown");
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
         globalVariables.put("Appointment", getDropdownValueByIndex(appointDropdown, "3"));
         pressDownArrow();
         pressDownArrow();
@@ -86,7 +86,7 @@ public class CheckInPage extends DriverUtils {
         globalVariables.put("Notes", getTextBoxValue(notes, "Notes"));
         click(checkInButtonOnPopup, "Checkin button");
         WaitUtils.waitForVisibilityOfElement(checkInButtonOnPopup);
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
     }
 
     public void verifyQuickCheckIn() {
@@ -119,7 +119,7 @@ public class CheckInPage extends DriverUtils {
         enterText(notes, nValue, "Notes");
         click(checkInButtonOnPopup, "Checkin button");
         WaitUtils.waitForVisibilityOfElement(checkInButtonOnPopup);
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
     }
 
     public void verifyWalkInCheckIn() {

@@ -65,6 +65,9 @@ public class CommonPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//span[text()='Velocity']/following::span[text()='Velocity Hub']")
     private WebElement velocityHub;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Velocity']/following::span[text()='Publish Trip']")
+    private WebElement publishTrip;
+
     public void clickOnSignIn() {
         click(signIn, "SignIn Link");
     }
@@ -77,11 +80,7 @@ public class CommonPage extends DriverUtils {
     }
 
     private void expandIntegrity() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        WaitUtils.sleepFor(1000);
         WaitUtils.waitForPageLoads();
         /*if (isElementDisplayed(integrityExpand, "Integrity expand icon")) {
             click(integrityExpand, "Expand Integrity");
@@ -147,4 +146,9 @@ public class CommonPage extends DriverUtils {
     public void openVelocityHubPage() {
         jsClick(velocityHub, "Velocity Hub Link");
     }
+
+    public void openPublishTripPage() {
+        jsClick(publishTrip, "Publish Trip Link");
+    }
+
 }

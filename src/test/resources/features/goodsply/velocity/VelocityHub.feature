@@ -12,8 +12,7 @@ Feature: One console for all four transport modes. Pick a mode to scope, or jump
       | Road                   | tms?tab=dashboard     |
       | Rail                   | yard-rake             |
       | Sea                    | maritime              |
-      # Air is navigating to Book Transport page
-      | Air                    | multimodal            |
+      | Air                    | book-transport        |
       | Live Map               | intelligence/live     |
       | Control Tower          | control-tower         |
       | Resilience Simulator   | twin                  |

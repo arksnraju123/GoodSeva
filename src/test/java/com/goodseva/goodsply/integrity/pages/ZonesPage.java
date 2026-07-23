@@ -90,7 +90,7 @@ public class ZonesPage extends DriverUtils {
         globalVariables.clear();
         globalVariables.put("Zone Name", zoneNameValue);
         globalVariables.put("Zone Code", zoneCodeValue);
-        Thread.sleep(3000);
+        WaitUtils.sleepFor(3000);
         selectDropdownValueByIndex(facilityDropdown, facility, "Facility Dropdown");
         globalVariables.put("Facility", getDropdownValueByIndex(facilityDropdown, facility));
         clearData(zoneNameTxtBox, "Zone Name");
@@ -138,7 +138,7 @@ public class ZonesPage extends DriverUtils {
         click(deleteBnt, "Delete Zone");
         WaitUtils.waitForAlert();
         acceptAlert();
-        Thread.sleep(3000);
+        WaitUtils.sleepFor(3000);
     }
 
     public void verifyZoneDeleted(){
@@ -146,7 +146,7 @@ public class ZonesPage extends DriverUtils {
     }
 
     public String getTotalZones() throws InterruptedException {
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
         return getText(totalZones, "Total Zones").replaceAll("\\D+", "");
     }
 }

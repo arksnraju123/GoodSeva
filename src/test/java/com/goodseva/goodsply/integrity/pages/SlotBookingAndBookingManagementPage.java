@@ -175,7 +175,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         selectDropdownValueByVisibleText(goodsType, goodsTypeValue, "Goods Type");
         click(submitBooking, "Submit Spot Booking button");
         WaitUtils.waitForElement(By.xpath("//button[@data-testid='button-submit-booking']"));
-        //Thread.sleep(5000);
+        //WaitUtils.sleepFor(5000);
     }
 
     public void selectWeeklyCalendarDate(String date) {
@@ -217,7 +217,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         String popUpVehicleType = getText(popUpVehType, "Popup Vehicle Type");
         Assert.assertEquals(popUpVehicleType.toLowerCase(), globalVariables.get("VehicleType").toLowerCase(), "Vehicle Type is wrong on popup");
         click(driverTab, "Driver tab");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
         String driverNm = getText(popUpDriverName, "Popup driver name");
         Assert.assertEquals(driverNm, globalVariables.get("DriverName"), "Driver name is wrong on popup");
         String popUpLicNum = getText(popUpLicenseNumber, "Popup License Number");
@@ -225,7 +225,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         String popupMobileNum = getText(popUpMobileNumber, "Popup Mobile Number");
         Assert.assertEquals(popupMobileNum, globalVariables.get("MobileNumber"), "Mobile Number is wrong on popup");
         click(scheduleTab, "Schedule tab");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
         String popupExpArr = getText(popUpExpectedArrival, "Popup Expected Arrival");
         Assert.assertTrue(popupExpArr.contains(globalVariables.get("Arrival")), "Expected Arrival is wrong on popup. Actual: " + popupExpArr + ", Expected: " + globalVariables.get("Arrival"));
         String popupExpDep = getText(popUpExpectedDeparture, "Popup Expected Departure");
@@ -233,7 +233,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         String popupRequested = getText(popUpRequestedAt, "Popup Requested At");
         Assert.assertTrue(popupRequested.contains(globalVariables.get("Requested")), "Requested is wrong on popup. Actual: " + popupExpArr + ", Expected: " + globalVariables.get("Requested"));
         click(loadTab, "Load tab");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
         String popUpLoadTp = getText(popUpLoadType, "Popup Load Type");
         Assert.assertEquals(popUpLoadTp.toLowerCase(), globalVariables.get("LoadType").toLowerCase(), "Load Type is wrong on popup");
         String popUpGoodsTp = getText(popUpGoodsType, "Popup Goods Type");
@@ -264,7 +264,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         String popUpVehicleType = getText(popUpVehType, "Popup Vehicle Type");
         Assert.assertEquals(popUpVehicleType.toLowerCase(), globalVariables.get("VehicleType").toLowerCase(), "Vehicle Type is wrong on popup");
         click(driverTab, "Driver tab");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
         String driverNm = getText(popUpDriverName, "Popup driver name");
         Assert.assertEquals(driverNm, globalVariables.get("DriverName"), "Driver name is wrong on popup");
         String popUpLicNum = getText(popUpLicenseNumber, "Popup License Number");
@@ -272,7 +272,7 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         String popupMobileNum = getText(popUpMobileNumber, "Popup Mobile Number");
         Assert.assertEquals(popupMobileNum, globalVariables.get("MobileNumber"), "Mobile Number is wrong on popup");
         click(scheduleTab, "Schedule tab");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
         String popupExpArr = getText(popUpExpectedArrival, "Popup Expected Arrival");
         Assert.assertTrue(popupExpArr.contains(globalVariables.get("Arrival")), "Expected Arrival is wrong on popup. Actual: " + popupExpArr + ", Expected: " + globalVariables.get("Arrival"));
         String popupExpDep = getText(popUpExpectedDeparture, "Popup Expected Departure");
@@ -280,13 +280,13 @@ public class SlotBookingAndBookingManagementPage extends DriverUtils {
         String popupRequested = getText(popUpRequestedAt, "Popup Requested At");
         Assert.assertTrue(popupRequested.contains(globalVariables.get("Requested")), "Requested is wrong on popup. Actual: " + popupExpArr + ", Expected: " + globalVariables.get("Requested"));
         click(loadTab, "Load tab");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
         String popUpLoadTp = getText(popUpLoadType, "Popup Load Type");
         Assert.assertEquals(popUpLoadTp.toLowerCase(), globalVariables.get("LoadType").toLowerCase(), "Load Type is wrong on popup");
         String popUpGoodsTp = getText(popUpGoodsType, "Popup Goods Type");
         Assert.assertEquals(popUpGoodsTp.toLowerCase(), globalVariables.get("GoodsType").toLowerCase(), "Goods Type is wrong on popup");
         click(closePopup, "Close popup");
-        Thread.sleep(1000);
+        WaitUtils.sleepFor(1000);
     }
 
     public void getAllActionValues() {

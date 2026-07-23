@@ -1,22 +1,201 @@
 package com.goodseva.goodsply.integrity.pages;
 
+import com.goodseva.utils.StringUtils;
 import com.goodseva.webdriverutils.DriverUtils;
+import com.goodseva.webdriverutils.WaitUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+
+import java.util.List;
 
 public class BinsPage extends DriverUtils {
     public BinsPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
 
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-add-bin']")
+    private WebElement addBinButton;
+
     @FindBy(how = How.XPATH, using = "//div[text()='Saved Bins']/span")
     private WebElement totalBins;
 
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-search-bins']")
+    private WebElement searchBinsTextBox;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-zone']")
+    private WebElement filterByZoneDropdown;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-type']")
+    private WebElement filterByTypeDropdown;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-status']")
+    private WebElement filterByStatusDropdown;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[1]/div")
+    private WebElement binCodeFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[2]/div")
+    private WebElement locationFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[3]/div/div[1]")
+    private WebElement zoneFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[4]/div[1]")
+    private WebElement typeFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[5]/div[1]")
+    private WebElement statusFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[6]/div/div")
+    private WebElement capacityFromTable;
+
+    @FindBy(how = How.XPATH, using = "(//tbody//tr[@data-component-name='TableRow'][1]/td[7]//*[local-name()='svg'])[1]")
+    private WebElement pickableOptionFromTable;
+
+    @FindBy(how = How.XPATH, using = "(//tbody//tr[@data-component-name='TableRow'][1]/td[7]//*[local-name()='svg'])[2]")
+    private WebElement receivableOptionFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[8]//button[1]")
+    private WebElement printIconFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[8]//button[2]")
+    private WebElement editIconFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[8]//button[3]")
+    private WebElement deleteIconFromTable;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-zone']")
+    private WebElement zoneDropdown;
+
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-bin-code']")
+    private WebElement binCodeTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-bin-type']")
+    private WebElement binTypeDropdown;
+
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-aisle']")
+    private WebElement aisleTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-rack']")
+    private WebElement rackTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-shelf']")
+    private WebElement shelfTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-level']")
+    private WebElement levelTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-status']")
+    private WebElement statusDropdown;
+
+    @FindBy(how = How.XPATH, using = "//input[@data-testid='input-capacity']")
+    private WebElement capacityTxtBox;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='checkbox-is-pickable']")
+    private WebElement pickableRadioBtn;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='checkbox-is-receivable']")
+    private WebElement receivableRadioBtn;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-cancel']")
+    private WebElement cancelBtn;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-save-bin']")
+    private WebElement createBinBtn;
+
+    @FindBy(how = How.XPATH, using = "//div[text()='Saved Bins']/following::table")
+    private WebElement savedBinsTable;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-save-bin']")
+    private WebElement updateBinBtn;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[1]/div")
+    private List<WebElement> allBinCodes;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[2]/div")
+    private List<WebElement> allLocations;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[4]/div")
+    private List<WebElement> allTypes;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[5]/div")
+    private List<WebElement> allStatus;
+
+    @FindBy(how = How.XPATH, using = "(//div//select)[1]/option")
+    private List<WebElement> zoneDropDownValues;
+
+    @FindBy(how = How.XPATH, using = "(//div//select)[2]/option")
+    private List<WebElement> binTypeDropdownValues;
+
+    @FindBy(how = How.XPATH, using = "(//div//select)[3]/option")
+    private List<WebElement> statusDropdownValues;
+
     public String getTotalBins() throws InterruptedException {
-        Thread.sleep(2000);
+        WaitUtils.sleepFor(2000);
         return getText(totalBins, "Total Bins").replaceAll("\\D+", "");
+    }
+
+    public void createNewBin(String binCode, String binType, String aisle, String rack, String shelf, String level, String status, String capacity, String pickable, String receivable) {
+        click(addBinButton, "Add Bin button");
+        WaitUtils.sleepFor(2000);
+        WaitUtils.waitForElementClickable(aisleTxtBox);
+        click(zoneDropdown, "");
+        String zoneValue = getText(zoneDropDownValues.get(5), "Zone");
+        pressEscape();
+        globalVariables.put("Zone", zoneValue);
+        selectDropdownValue(zoneDropdown, zoneDropDownValues, zoneValue, "Zone");
+        String binCodeValue = binCode.concat(StringUtils.getRandomNumber());
+        globalVariables.put("BinCode", binCodeValue);
+        enterText(binCodeTxtBox, binCodeValue, "Bin code");
+        selectDropdownValue(binTypeDropdown, binTypeDropdownValues, binType, "Bin Type");
+        enterText(aisleTxtBox, aisle, "Aisle");
+        enterText(rackTxtBox, rack, "Rack");
+        enterText(shelfTxtBox, shelf, "Shelf");
+        enterText(levelTxtBox, level, "Level");
+        WaitUtils.sleepFor(1000);
+        selectDropdownValue(statusDropdown, statusDropdownValues, status, "Status dropdown");
+        enterText(capacityTxtBox, capacity, "Capacity");
+        if (pickable.equalsIgnoreCase("Yes")){
+            if(!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
+                click(pickableRadioBtn, "Pickable radio button");
+        }else{
+            if(!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
+                click(pickableRadioBtn, "Pickable radio button");
+        }
+        if (receivable.equalsIgnoreCase("Yes")){
+            if(!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
+                click(receivableRadioBtn, "Receivable radio button");
+        }else{
+            if(!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
+                click(receivableRadioBtn, "Receivable radio button");
+        }
+        click(createBinBtn, "Create Bin button");
+        WaitUtils.waitForVisibilityOfElement(savedBinsTable);
+        WaitUtils.sleepFor(5000);
+    }
+
+    public void verifyBin(String location, String type, String status, String capacity, String pickable, String receivable) {
+        Assert.assertEquals(getText(binCodeFromTable, "Bin code"), globalVariables.get("BinCode"), "BinCode is wrong");
+        Assert.assertEquals(getText(locationFromTable, "Location"), location, "Location is wrong");
+        Assert.assertTrue(globalVariables.get("Zone").contains(getText(zoneFromTable, "Zone")), "Zone is wrong");
+        Assert.assertEquals(getText(typeFromTable, "Zone"), type, "Type is wrong");
+        Assert.assertEquals(getText(statusFromTable, "Status"), status, "Status is wrong");
+        Assert.assertTrue(getText(capacityFromTable, "Capacity").contains(capacity), "Capacity is wrong");
+        if (pickable.equalsIgnoreCase("Yes")){
+            Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Pickable", "Pickable is wrong");
+        }else{
+            Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Not Pickable", "Pickable is wrong");
+        }
+
+        if (receivable.equalsIgnoreCase("Yes")){
+            Assert.assertEquals(getAttribute(receivableOptionFromTable, "title"), "Receivable", "Receivable is wrong");
+        }else{
+            Assert.assertEquals(getAttribute(receivableOptionFromTable, "title"), "Not Receivable", "Receivable is wrong");
+        }
     }
 }

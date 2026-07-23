@@ -26,6 +26,10 @@ public class CommonSteps {
             commonPage.openCheckInPage();
         } else if (page.equalsIgnoreCase("Velocity Hub")) {
             commonPage.openVelocityHubPage();
+        } else if (page.equalsIgnoreCase("Publish Trip")) {
+            commonPage.openPublishTripPage();
+        } else if (page.equalsIgnoreCase("Bins")) {
+            commonPage.openBinsPage();
         } else {
             Assert.assertTrue(false, "Invalid Page name provided, Provided page name is: " + page);
         }

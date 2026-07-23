@@ -2,6 +2,7 @@ package com.goodseva.goodsply.velocity.steps;
 
 import com.goodseva.goodsply.velocity.pages.VelocityHubPage;
 import com.goodseva.utils.WebDriverHelper;
+import com.goodseva.webdriverutils.WaitUtils;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -23,7 +24,7 @@ public class VelocityHubSteps {
             expectedPage = row.get("ExpectedPage");
             link = row.get("Link");
             velocityHubPage.clickOnEachLink(velocityHubPage.getElement(By.xpath("//h1[text()='Velocity']/following::div[text()='" + link + "']  |  //h1[text()='Velocity']/following::span[text()='" + link + "']"), link + " link"), link + " link");
-            Thread.sleep(500);
+            WaitUtils.sleepFor(500);
             actualdPage = velocityHubPage.getPageURL();
             Assert.assertTrue(actualdPage.contains(expectedPage), "Navigated to wrong page when click on " + link + ", Expected page is: " + expectedPage + ", Actual page is: " + actualdPage);
             velocityHubPage.navigateBack();
