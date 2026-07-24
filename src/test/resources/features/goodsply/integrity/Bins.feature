@@ -15,15 +15,25 @@ Feature: Bins Management
       | AS001-R001-S001-5 | floor | available | 123.00   | Yes      | Yes        |
     When User search with Bin Name
     Then Verify search results with searched Bin Codes
-    When User search with Zone
+    When User reset Bins search
+    And User search with Zone
     Then Verify search results with searched Zone
-    When User search with Type
+    When User reset Zones search
+    And User search with Type
     Then Verify search results with searched Type
-    When User search with Status
+    When User reset Type search
+    And User search with Status
     Then Verify search results with searched Status
+    When User reset Status search
     When User Edit new Bin
       | BinCode            | BinType | Aisle | Rack | Shelf | Lever | Status  | Capacity | Pickable | Receivable |
       | Auto_BinCode_Edit_ | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
     Then Verify newly created Bin
       | Location           | Type | Status  | Capacity | Pickable | Receivable |
       | AS002-R002-S002-10 | bulk | blocked | 567.00   | No       | No         |
+
+  @Bins02
+  Scenario: Search Invalid Bin
+    When User search for invalid Bin
+    Then Verify No bins found in table
+    And Verify No bins yet — use "Add Bin" above to create one

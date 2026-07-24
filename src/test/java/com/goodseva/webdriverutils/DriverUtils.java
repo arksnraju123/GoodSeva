@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.goodseva.webdriverutils.WaitUtils.wait;
 
@@ -20,7 +21,7 @@ public class DriverUtils extends WebDriverHelper {
         log.info("Entering " + text + " in " + elementName);
         WaitUtils.waitForElementClickable(element);
         highlightElement(element);
-        element.clear();
+        clearData(element, elementName);
         element.sendKeys(text);
     }
 
@@ -194,16 +195,34 @@ public class DriverUtils extends WebDriverHelper {
         return getDriver().getCurrentUrl();
     }
 
-    public void selectDropdownValue(WebElement dropdownName, List<WebElement> dropdownOptions, String dropdownOptionToSelect, String message){
+    public void selectDropdownValue(WebElement dropdownName, List<WebElement> dropdownOptions, String dropdownOptionToSelect, String message) {
         click(dropdownName, message);
         WaitUtils.sleepFor(2000);
-        for (int i=0; i<dropdownOptions.size(); i++){
-            if(dropdownOptions.get(i).getText().trim().equalsIgnoreCase(dropdownOptionToSelect)){
+        for (int i = 0; i < dropdownOptions.size(); i++) {
+            if (dropdownOptions.get(i).getText().trim().equalsIgnoreCase(dropdownOptionToSelect)) {
                 pressEnter();
                 break;
             }
             pressDownArrow();
         }
+    }
+
+    public void selectDropdownValues(WebElement dropdownName, List<WebElement> dropdownOptions, String dropdownOptionToSelect, String message) {
+        click(dropdownName, message);
+        WaitUtils.sleepFor(2000);
+        for (int i = 0; i < dropdownOptions.size(); i++) {
+            if (dropdownOptions.get(i).getText().trim().equalsIgnoreCase(dropdownOptionToSelect)) {
+                click(dropdownOptions.get(i), "Dropdown value");
+                break;
+            }
+        }
+    }
+
+    public List<String> getAllElementsValues(List<WebElement> allElements) {
+        highlightElement(allElements.get(0));
+        return allElements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
     }
 }
 

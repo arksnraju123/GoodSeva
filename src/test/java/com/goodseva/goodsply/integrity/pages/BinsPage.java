@@ -30,6 +30,21 @@ public class BinsPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-zone']")
     private WebElement filterByZoneDropdown;
 
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[1]/div")
+    private List<WebElement> binTableAllValues;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[3]/div/div[1]")
+    private List<WebElement> zoneTableAllValues;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[4]/div")
+    private List<WebElement> typeTableAllValues;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[5]/div")
+    private List<WebElement> statusTableAllValues;
+
+    @FindBy(how = How.XPATH, using = "//span[@data-component-name='SelectPrimitive.ItemText']")
+    private List<WebElement> filterByDropdownValues;
+
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-type']")
     private WebElement filterByTypeDropdown;
 
@@ -111,6 +126,12 @@ public class BinsPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//div[text()='Saved Bins']/following::table")
     private WebElement savedBinsTable;
 
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow']/td[1]")
+    private WebElement tableMsg;
+
+    @FindBy(how = How.XPATH, using = "//div[@data-component-name='CardTitle']/following-sibling::span")
+    private WebElement noBinMsg;
+
     @FindBy(how = How.XPATH, using = "//button[@data-testid='button-save-bin']")
     private WebElement updateBinBtn;
 
@@ -145,12 +166,14 @@ public class BinsPage extends DriverUtils {
         WaitUtils.sleepFor(2000);
         WaitUtils.waitForElementClickable(aisleTxtBox);
         click(zoneDropdown, "");
-        String zoneValue = getText(zoneDropDownValues.get(5), "Zone");
+        String zoneValue = getText(zoneDropDownValues.get(1), "Zone");
         pressEscape();
         globalVariables.put("Zone", zoneValue);
         selectDropdownValue(zoneDropdown, zoneDropDownValues, zoneValue, "Zone");
         String binCodeValue = binCode.concat(StringUtils.getRandomNumber());
         globalVariables.put("BinCode", binCodeValue);
+        globalVariables.put("Type", binType);
+        globalVariables.put("Status", status);
         enterText(binCodeTxtBox, binCodeValue, "Bin code");
         selectDropdownValue(binTypeDropdown, binTypeDropdownValues, binType, "Bin Type");
         enterText(aisleTxtBox, aisle, "Aisle");
@@ -160,18 +183,18 @@ public class BinsPage extends DriverUtils {
         WaitUtils.sleepFor(1000);
         selectDropdownValue(statusDropdown, statusDropdownValues, status, "Status dropdown");
         enterText(capacityTxtBox, capacity, "Capacity");
-        if (pickable.equalsIgnoreCase("Yes")){
-            if(!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
+        if (pickable.equalsIgnoreCase("Yes")) {
+            if (!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
                 click(pickableRadioBtn, "Pickable radio button");
-        }else{
-            if(!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
+        } else {
+            if (!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
                 click(pickableRadioBtn, "Pickable radio button");
         }
-        if (receivable.equalsIgnoreCase("Yes")){
-            if(!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
+        if (receivable.equalsIgnoreCase("Yes")) {
+            if (!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
                 click(receivableRadioBtn, "Receivable radio button");
-        }else{
-            if(!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
+        } else {
+            if (!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
                 click(receivableRadioBtn, "Receivable radio button");
         }
         click(createBinBtn, "Create Bin button");
@@ -186,16 +209,136 @@ public class BinsPage extends DriverUtils {
         Assert.assertEquals(getText(typeFromTable, "Zone"), type, "Type is wrong");
         Assert.assertEquals(getText(statusFromTable, "Status"), status, "Status is wrong");
         Assert.assertTrue(getText(capacityFromTable, "Capacity").contains(capacity), "Capacity is wrong");
-        if (pickable.equalsIgnoreCase("Yes")){
+        if (pickable.equalsIgnoreCase("Yes")) {
             Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Pickable", "Pickable is wrong");
-        }else{
+        } else {
             Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Not Pickable", "Pickable is wrong");
         }
 
-        if (receivable.equalsIgnoreCase("Yes")){
+        if (receivable.equalsIgnoreCase("Yes")) {
             Assert.assertEquals(getAttribute(receivableOptionFromTable, "title"), "Receivable", "Receivable is wrong");
-        }else{
+        } else {
             Assert.assertEquals(getAttribute(receivableOptionFromTable, "title"), "Not Receivable", "Receivable is wrong");
         }
+    }
+
+    public void searchWithBinName() {
+        enterText(searchBinsTextBox, globalVariables.get("BinCode"), "Bin Code");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void searchWithInvalidBinName() {
+        enterText(searchBinsTextBox, "xyz_"+StringUtils.getRandomNumber(10000, 1000000), "Bin Code");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void verifySearchBin() {
+        List<String> allValues = getAllElementsValues(binTableAllValues);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("BinCode").split("\\(")[0].trim())), "Search not worked correctly when search with BinCode");
+    }
+
+    public void searchWithZone() {
+        selectDropdownValue(filterByZoneDropdown, filterByDropdownValues, globalVariables.get("Zone").split("\\(")[0].trim(), "Search Zone dropdown");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void verifySearchZone() {
+        List<String> allValues = getAllElementsValues(zoneTableAllValues);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("Zone").split("\\(")[0].trim())), "Search not worked correctly when search with Zone");
+    }
+
+    public void searchWithType() {
+        selectDropdownValue(filterByTypeDropdown, filterByDropdownValues, globalVariables.get("Type"), "Search Type dropdown");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void verifySearchType() {
+        List<String> allValues = getAllElementsValues(typeTableAllValues);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("Type").toLowerCase())), "Search not worked correctly when search with Type");
+    }
+
+    public void searchWithStatus() {
+        selectDropdownValue(filterByStatusDropdown, filterByDropdownValues, globalVariables.get("Status"), "Search Status dropdown");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void verifySearchStatus() {
+        List<String> allValues = getAllElementsValues(statusTableAllValues);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("Status").toLowerCase())), "Search not worked correctly when search with Status");
+    }
+
+    public void resetSearch(String searchField) {
+        if (searchField.equalsIgnoreCase("Bins")) {
+            clearData(searchBinsTextBox, "Bin textbox");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+
+        if (searchField.equalsIgnoreCase("Zones")) {
+            selectDropdownValues(filterByZoneDropdown, filterByDropdownValues, "All Zones", "Search Zone dropdown");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+
+        if (searchField.equalsIgnoreCase("Type")) {
+            selectDropdownValues(filterByTypeDropdown, filterByDropdownValues, "All Types", "Search dropdown");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+
+        if (searchField.equalsIgnoreCase("Status")) {
+            selectDropdownValues(filterByStatusDropdown, filterByDropdownValues, "All Status", "Status dropdown");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+    }
+
+    public void editBin(String binCode, String binType, String aisle, String rack, String shelf, String level, String status, String capacity, String pickable, String receivable) {
+        click(getDriver().findElement(By.xpath("//div[text()='" + globalVariables.get("BinCode") + "']/following::button[contains(@data-testid, 'button-edit-bin')][1]")), "Edit button");
+        WaitUtils.sleepFor(2000);
+        WaitUtils.waitForElementClickable(aisleTxtBox);
+        String binCodeValue = binCode.concat(StringUtils.getRandomNumber());
+        globalVariables.replace("BinCode", binCodeValue);
+        globalVariables.replace("Type", binType);
+        globalVariables.replace("Status", status);
+        enterText(binCodeTxtBox, binCodeValue, "Bin code");
+        selectDropdownValue(binTypeDropdown, binTypeDropdownValues, binType, "Bin Type");
+        enterText(aisleTxtBox, aisle, "Aisle");
+        enterText(rackTxtBox, rack, "Rack");
+        enterText(shelfTxtBox, shelf, "Shelf");
+        enterText(levelTxtBox, level, "Level");
+        WaitUtils.sleepFor(1000);
+        selectDropdownValue(statusDropdown, statusDropdownValues, status, "Status dropdown");
+        enterText(capacityTxtBox, capacity, "Capacity");
+        if (pickable.equalsIgnoreCase("Yes")) {
+            if (!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
+                click(pickableRadioBtn, "Pickable radio button");
+        } else {
+            if (!getAttribute(pickableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
+                click(pickableRadioBtn, "Pickable radio button");
+        }
+        if (receivable.equalsIgnoreCase("Yes")) {
+            if (!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("true"))
+                click(receivableRadioBtn, "Receivable radio button");
+        } else {
+            if (!getAttribute(receivableRadioBtn, "aria-checked").equalsIgnoreCase("false"))
+                click(receivableRadioBtn, "Receivable radio button");
+        }
+        click(createBinBtn, "Create Bin button");
+        WaitUtils.waitForVisibilityOfElement(savedBinsTable);
+        WaitUtils.sleepFor(5000);
+    }
+
+    public void verifyTableMessage() {
+        Assert.assertEquals(getText(tableMsg, "Table message"), "No bins found", "Table message is wrong when do invalid Bin search");
+    }
+
+    public void verifyNoBinMessage() {
+        Assert.assertEquals(getText(noBinMsg, "No Bin message"), "No bins yet — use \"Add Bin\" above to create one", "No Bin message is wrong when do invalid Bin search");
     }
 }
