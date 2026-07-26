@@ -1,11 +1,10 @@
 package com.goodseva.goodsply.integrity.pages;
 
+import com.goodseva.utils.FileUtils;
 import com.goodseva.utils.StringUtils;
 import com.goodseva.webdriverutils.DriverUtils;
 import com.goodseva.webdriverutils.WaitUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -17,6 +16,7 @@ public class BinsPage extends DriverUtils {
     public BinsPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
+    String pdfDownloadPath = System.getProperty("user.home") + "/Downloads/download.pdf";
 
     @FindBy(how = How.XPATH, using = "//button[@data-testid='button-add-bin']")
     private WebElement addBinButton;
@@ -59,6 +59,9 @@ public class BinsPage extends DriverUtils {
 
     @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[3]/div/div[1]")
     private WebElement zoneFromTable;
+
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[3]/div/div[2]")
+    private WebElement zoneFacilityFromTable;
 
     @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[4]/div[1]")
     private WebElement typeFromTable;
@@ -340,5 +343,37 @@ public class BinsPage extends DriverUtils {
 
     public void verifyNoBinMessage() {
         Assert.assertEquals(getText(noBinMsg, "No Bin message"), "No bins yet — use \"Add Bin\" above to create one", "No Bin message is wrong when do invalid Bin search");
+    }
+
+    public void deleteBin() {
+        click(getDriver().findElement(By.xpath("//div[text()='" + globalVariables.get("BinCode") + "']/following::button[contains(@data-testid, 'button-delete-bin')][1]")), "Delete button");
+        WaitUtils.sleepFor(1000);
+        acceptAlert();
+    }
+
+    public void verifyBinDeleted() {
+        enterText(searchBinsTextBox, globalVariables.get("BinCode"), "Bin Code");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+        Assert.assertEquals(getText(tableMsg, "Table message"), "No bins found", "Bin has not deleted when delete it");
+    }
+
+    public void clickOnPrint() {
+        log.info("Deleting existing file :"+pdfDownloadPath);
+        FileUtils.deleteFileFromFolder(pdfDownloadPath);
+        click(getDriver().findElement(By.xpath("//div[text()='"+globalVariables.get("BinCode")+"']/following::button[contains(@data-testid, 'button-print-label-bin')][1]")), "Delete button");
+        WaitUtils.sleepFor(5000);
+    }
+
+    public void verifyPDFFile(String type, String capacity, String status) {
+        String pdfFileData = FileUtils.getPDFFileData(pdfDownloadPath).toLowerCase();
+        Assert.assertTrue(pdfFileData.contains("goodseva wms — bin location label".toLowerCase()), "Header is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains(globalVariables.get("BinCode").toLowerCase()), "Bind code is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains(getText(zoneFacilityFromTable, "Zone").toLowerCase()), "Zone is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains(getText(zoneFacilityFromTable, "Zone facility").toLowerCase()), "Facility is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains(type.toLowerCase()), "Type is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains(capacity.toLowerCase()), "Capacity is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains(status.toLowerCase()), "Status is wrong in PDF");
+        Assert.assertTrue(pdfFileData.contains("scan before put-away and picking".toLowerCase()), "Footer is wrong in PDF");
     }
 }

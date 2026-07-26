@@ -6,7 +6,7 @@ Feature: Bins Management
     And User open Bins page
 
   @Bins01
-  Scenario: Create new bin and verify Search
+  Scenario: Create, Update and Delete Bin and verify Search
     Given User Add new Bin
       | BinCode       | BinType | Aisle | Rack | Shelf | Lever | Status    | Capacity | Pickable | Receivable |
       | Auto_BinCode_ | Floor   | AS001 | R001 | S001  | 5     | Available | 123      | Yes      | Yes        |
@@ -28,12 +28,24 @@ Feature: Bins Management
     When User Edit new Bin
       | BinCode            | BinType | Aisle | Rack | Shelf | Lever | Status  | Capacity | Pickable | Receivable |
       | Auto_BinCode_Edit_ | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
-    Then Verify newly created Bin
+    Then Verify newly edited Bin
       | Location           | Type | Status  | Capacity | Pickable | Receivable |
       | AS002-R002-S002-10 | bulk | blocked | 567.00   | No       | No         |
+    When User click on Delete
+    Then Verify Bin has deleted
 
   @Bins02
   Scenario: Search Invalid Bin
     When User search for invalid Bin
     Then Verify No bins found in table
     And Verify No bins yet — use "Add Bin" above to create one
+
+  @Bins03
+  Scenario: Verify Print PDF file
+    Given User Add new Bin
+      | BinCode       | BinType | Aisle | Rack | Shelf | Lever | Status    | Capacity | Pickable | Receivable |
+      | Auto_BinCode_ | Bulk    | AS001 | R001 | S001  | 5     | Available | 130      | Yes      | Yes        |
+    And User click on Print button
+    Then Verify downloaded PDF file
+      | BinCode      | Zone         | Facility   | Type | Capacity  | Status    |
+      | AutoVerified | AutoVerified | AutoVerify | Bulk | 130.00 kg | AVAILABLE |

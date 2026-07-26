@@ -28,8 +28,8 @@ public class BinsSteps {
         }
     }
 
-    @When("^Verify newly created Bin$")
-    public void verifyBin(DataTable dataTable) {
+    @Then("^Verify newly (.*) Bin$")
+    public void verifyBin(String action, DataTable dataTable) {
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
         for (Map<String, String> row : data) {
             binsPage.verifyBin(row.get("Location"), row.get("Type"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
@@ -94,5 +94,28 @@ public class BinsSteps {
     @Then("^Verify No bins yet — use \"Add Bin\" above to create one")
     public void verifyNoBinMessage() {
         binsPage.verifyNoBinMessage();
+    }
+
+    @When("^User click on Delete")
+    public void clickOnDelete() {
+        binsPage.deleteBin();
+    }
+
+    @Then("^Verify Bin has deleted")
+    public void verifyBinDeleted() {
+        binsPage.verifyBinDeleted();
+    }
+
+    @Then("^User click on Print button")
+    public void clickOnPrint() {
+        binsPage.clickOnPrint();
+    }
+
+    @Then("^Verify downloaded PDF file$")
+    public void verifyPDFFile(DataTable dataTable) {
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        for (Map<String, String> row : data) {
+            binsPage.verifyPDFFile(row.get("Type"), row.get("Capacity"), row.get("Status"));
+        }
     }
 }

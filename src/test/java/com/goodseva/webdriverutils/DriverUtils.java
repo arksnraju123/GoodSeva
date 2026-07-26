@@ -8,6 +8,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -179,10 +181,6 @@ public class DriverUtils extends WebDriverHelper {
         return element.getAttribute(attributeName);
     }
 
-    public void acceptAlert() {
-        getDriver().switchTo().alert().accept();
-    }
-
     public void navigateBack() {
         getDriver().navigate().back();
     }
@@ -223,6 +221,20 @@ public class DriverUtils extends WebDriverHelper {
         return allElements.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
+    }
+
+    public void acceptAlert() {
+        log.info("Accepting alert");
+        WaitUtils.waitForAlert();
+        getDriver().switchTo().alert().accept();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void dismissAlert() {
+        log.info("Dismiss alert");
+        WaitUtils.waitForAlert();
+        getDriver().switchTo().alert().dismiss();
+        WaitUtils.sleepFor(2000);
     }
 }
 
