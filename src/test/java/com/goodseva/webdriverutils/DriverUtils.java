@@ -88,7 +88,9 @@ public class DriverUtils extends WebDriverHelper {
         log.info("Getting text from " + elementName);
         WaitUtils.waitForElementClickable(element);
         highlightElement(element);
-        return element.getText().trim();
+        String text = element.getText().trim();
+        log.info("GetText is: "+text);
+        return text;
     }
 
     public WebElement getElement(By element, String elementName) {
@@ -235,6 +237,10 @@ public class DriverUtils extends WebDriverHelper {
         WaitUtils.waitForAlert();
         getDriver().switchTo().alert().dismiss();
         WaitUtils.sleepFor(2000);
+    }
+
+    public boolean isElementEnabled(WebElement element) {
+        return element.isEnabled();
     }
 }
 

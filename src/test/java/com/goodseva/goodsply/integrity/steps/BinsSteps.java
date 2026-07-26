@@ -36,47 +36,47 @@ public class BinsSteps {
         }
     }
 
-    @When("^User search with Bin Name$")
+    @When("^User search with Bin Name in Bins page$")
     public void searchWithBinName() {
         binsPage.searchWithBinName();
     }
 
-    @Then("^Verify search results with searched Bin Codes$")
+    @Then("^Verify search results with searched Bin Codes in Bins page$")
     public void verifySearchBin() {
         binsPage.verifySearchBin();
     }
 
-    @When("^User search with Zone$")
+    @When("^User search with Zone in Bins page$")
     public void searchWithZone() {
         binsPage.searchWithZone();
     }
 
-    @Then("^Verify search results with searched Zone$")
+    @Then("^Verify search results with searched Zone in Bins page$")
     public void verifySearchZone() {
         binsPage.verifySearchZone();
     }
 
-    @When("^User search with Type$")
+    @When("^User search with Type in Bins page$")
     public void searchWithType() {
         binsPage.searchWithType();
     }
 
-    @Then("^Verify search results with searched Type")
+    @Then("^Verify search results with searched Type in Bins page")
     public void verifySearchType() {
         binsPage.verifySearchType();
     }
 
-    @When("^User search with Status$")
+    @When("^User search with Status in Bins page$")
     public void searchWithStatus() {
         binsPage.searchWithStatus();
     }
 
-    @Then("^Verify search results with searched Status")
+    @Then("^Verify search results with searched Status in Bins page")
     public void verifySearchStatus() {
         binsPage.verifySearchStatus();
     }
 
-    @When("^User reset (.*) search")
+    @When("^User reset (.*) search in Bins page")
     public void resetSearch(String searchField) {
         binsPage.resetSearch(searchField);
     }
@@ -96,12 +96,12 @@ public class BinsSteps {
         binsPage.verifyNoBinMessage();
     }
 
-    @When("^User click on Delete")
+    @When("^User click on Delete in Bins page")
     public void clickOnDelete() {
         binsPage.deleteBin();
     }
 
-    @Then("^Verify Bin has deleted")
+    @Then("^Verify Bin has deleted in Bins page")
     public void verifyBinDeleted() {
         binsPage.verifyBinDeleted();
     }
@@ -117,5 +117,33 @@ public class BinsSteps {
         for (Map<String, String> row : data) {
             binsPage.verifyPDFFile(row.get("Type"), row.get("Capacity"), row.get("Status"));
         }
+    }
+
+    @Then("^Verify all edited fields in edit Bin page$")
+    public void verifyEditBin(DataTable dataTable) {
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        for (Map<String, String> row : data) {
+            binsPage.verifyEditBinPage(row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Lever"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
+        }
+    }
+
+    @Then("^Verify Previous button disabled by default in Bins page")
+    public void verifyPrevBtn() {
+        binsPage.verifyPrevBtn();
+    }
+
+    @When("^User click on Next button in Bins page")
+    public void clickNextBtn() {
+        binsPage.clickOnNextBtn();
+    }
+
+    @When("^User click on Previous button in Bins page")
+    public void clickPreviousBtn() {
+        binsPage.clickOnPrevBtn();
+    }
+
+    @Then("^Verify page navigated to page (.*) in Bins page")
+    public void verifyPagination(String pageNum) {
+        binsPage.verifyPagination(pageNum);
     }
 }

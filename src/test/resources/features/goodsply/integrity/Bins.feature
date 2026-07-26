@@ -13,26 +13,29 @@ Feature: Bins Management
     Then Verify newly created Bin
       | Location          | Type  | Status    | Capacity | Pickable | Receivable |
       | AS001-R001-S001-5 | floor | available | 123.00   | Yes      | Yes        |
-    When User search with Bin Name
-    Then Verify search results with searched Bin Codes
-    When User reset Bins search
-    And User search with Zone
-    Then Verify search results with searched Zone
-    When User reset Zones search
-    And User search with Type
-    Then Verify search results with searched Type
-    When User reset Type search
-    And User search with Status
-    Then Verify search results with searched Status
-    When User reset Status search
+    When User search with Bin Name in Bins page
+    Then Verify search results with searched Bin Codes in Bins page
+    When User reset Bins search in Bins page
+    And User search with Zone in Bins page
+    Then Verify search results with searched Zone in Bins page
+    When User reset Zones search in Bins page
+    And User search with Type in Bins page
+    Then Verify search results with searched Type in Bins page
+    When User reset Type search in Bins page
+    And User search with Status in Bins page
+    Then Verify search results with searched Status in Bins page
+    When User reset Status search in Bins page
     When User Edit new Bin
       | BinCode            | BinType | Aisle | Rack | Shelf | Lever | Status  | Capacity | Pickable | Receivable |
       | Auto_BinCode_Edit_ | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
     Then Verify newly edited Bin
       | Location           | Type | Status  | Capacity | Pickable | Receivable |
       | AS002-R002-S002-10 | bulk | blocked | 567.00   | No       | No         |
-    When User click on Delete
-    Then Verify Bin has deleted
+    Then Verify all edited fields in edit Bin page
+      | BinCode      | BinType | Aisle | Rack | Shelf | Lever | Status  | Capacity | Pickable | Receivable |
+      | AutoVerified | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
+    When User click on Delete in Bins page
+    Then Verify Bin has deleted in Bins page
 
   @Bins02
   Scenario: Search Invalid Bin
@@ -49,3 +52,11 @@ Feature: Bins Management
     Then Verify downloaded PDF file
       | BinCode      | Zone         | Facility   | Type | Capacity  | Status    |
       | AutoVerified | AutoVerified | AutoVerify | Bulk | 130.00 kg | AVAILABLE |
+
+  @Bins04
+  Scenario: Verify pagination
+    Then Verify Previous button disabled by default in Bins page
+    When User click on Next button in Bins page
+    Then Verify page navigated to page 2 in Bins page
+    When User click on Previous button in Bins page
+    Then Verify page navigated to page 1 in Bins page

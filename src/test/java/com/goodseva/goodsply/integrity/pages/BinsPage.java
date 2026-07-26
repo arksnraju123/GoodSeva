@@ -16,6 +16,7 @@ public class BinsPage extends DriverUtils {
     public BinsPage(WebDriver webDriver) {
         PageFactory.initElements(webDriver, this);
     }
+
     String pdfDownloadPath = System.getProperty("user.home") + "/Downloads/download.pdf";
 
     @FindBy(how = How.XPATH, using = "//button[@data-testid='button-add-bin']")
@@ -96,6 +97,9 @@ public class BinsPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-bin-type']")
     private WebElement binTypeDropdown;
 
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-bin-type']")
+    private WebElement binTypeDropdownValue;
+
     @FindBy(how = How.XPATH, using = "//input[@data-testid='input-aisle']")
     private WebElement aisleTxtBox;
 
@@ -110,6 +114,9 @@ public class BinsPage extends DriverUtils {
 
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-status']")
     private WebElement statusDropdown;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-status']/span")
+    private WebElement statusDropdownValue;
 
     @FindBy(how = How.XPATH, using = "//input[@data-testid='input-capacity']")
     private WebElement capacityTxtBox;
@@ -158,6 +165,15 @@ public class BinsPage extends DriverUtils {
 
     @FindBy(how = How.XPATH, using = "(//div//select)[3]/option")
     private List<WebElement> statusDropdownValues;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-next-page']")
+    private WebElement nextBtn;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-prev-page']")
+    private WebElement previousBtn;
+
+    @FindBy(how = How.XPATH, using = "//button[text()='Previous']/preceding::div[1]")
+    private WebElement totalPages;
 
     public String getTotalBins() throws InterruptedException {
         WaitUtils.sleepFor(2000);
@@ -225,6 +241,36 @@ public class BinsPage extends DriverUtils {
         }
     }
 
+    public void verifyEditBinPage(String binType, String aisle, String rack, String shelf, String level, String status, String capacity, String pickable, String receivable) {
+        click(getDriver().findElement(By.xpath("//div[text()='" + globalVariables.get("BinCode") + "']/following::button[contains(@data-testid, 'button-edit-bin')][1]")), "Edit button");
+        WaitUtils.sleepFor(2000);
+        WaitUtils.waitForElementClickable(aisleTxtBox);
+        Assert.assertEquals(getTextBoxValue(binCodeTxtBox, "Bin code"), globalVariables.get("BinCode"), "Edited BinCode is wrong");
+        Assert.assertEquals(getText(binTypeDropdownValue, "Bin type"), binType, "Edited Type is wrong");
+        Assert.assertEquals(getTextBoxValue(aisleTxtBox, "Aisle"), aisle, "Edited Aisle is wrong");
+        Assert.assertEquals(getTextBoxValue(rackTxtBox, "Rack"), rack, "Edited Rack is wrong");
+        Assert.assertEquals(getTextBoxValue(shelfTxtBox, "Shelf"), shelf, "Edited Shelf is wrong");
+        Assert.assertEquals(getTextBoxValue(levelTxtBox, "Level"), level, "Edited Level is wrong");
+        Assert.assertEquals(getText(statusDropdownValue, "Status dropdown"), status, "Edited Status is wrong");
+        Assert.assertEquals(getTextBoxValue(capacityTxtBox, "Capacity"), capacity, "Edited Capacity is wrong");
+
+        if (pickable.equalsIgnoreCase("Yes")) {
+            Assert.assertEquals(getAttribute(pickableRadioBtn, "aria-checked"), "true", "Edited Pickable is wrong");
+        } else {
+            Assert.assertEquals(getAttribute(pickableRadioBtn, "aria-checked"), "false", "Edited Pickable is wrong");
+        }
+
+        if (receivable.equalsIgnoreCase("Yes")) {
+            Assert.assertEquals(getAttribute(receivableRadioBtn, "aria-checked"), "true", "Edited Receivable is wrong");
+        } else {
+            Assert.assertEquals(getAttribute(receivableRadioBtn, "aria-checked"), "false", "Edited Receivable is wrong");
+        }
+
+        click(cancelBtn, "Cancel button");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
     public void searchWithBinName() {
         enterText(searchBinsTextBox, globalVariables.get("BinCode"), "Bin Code");
         WaitUtils.waitForPageLoads();
@@ -232,7 +278,7 @@ public class BinsPage extends DriverUtils {
     }
 
     public void searchWithInvalidBinName() {
-        enterText(searchBinsTextBox, "xyz_"+StringUtils.getRandomNumber(10000, 1000000), "Bin Code");
+        enterText(searchBinsTextBox, "xyz_" + StringUtils.getRandomNumber(10000, 1000000), "Bin Code");
         WaitUtils.waitForPageLoads();
         WaitUtils.sleepFor(2000);
     }
@@ -359,9 +405,9 @@ public class BinsPage extends DriverUtils {
     }
 
     public void clickOnPrint() {
-        log.info("Deleting existing file :"+pdfDownloadPath);
+        log.info("Deleting existing file :" + pdfDownloadPath);
         FileUtils.deleteFileFromFolder(pdfDownloadPath);
-        click(getDriver().findElement(By.xpath("//div[text()='"+globalVariables.get("BinCode")+"']/following::button[contains(@data-testid, 'button-print-label-bin')][1]")), "Delete button");
+        click(getDriver().findElement(By.xpath("//div[text()='" + globalVariables.get("BinCode") + "']/following::button[contains(@data-testid, 'button-print-label-bin')][1]")), "Delete button");
         WaitUtils.sleepFor(5000);
     }
 
@@ -375,5 +421,25 @@ public class BinsPage extends DriverUtils {
         Assert.assertTrue(pdfFileData.contains(capacity.toLowerCase()), "Capacity is wrong in PDF");
         Assert.assertTrue(pdfFileData.contains(status.toLowerCase()), "Status is wrong in PDF");
         Assert.assertTrue(pdfFileData.contains("scan before put-away and picking".toLowerCase()), "Footer is wrong in PDF");
+    }
+
+    public void verifyPrevBtn() {
+        Assert.assertFalse(isElementEnabled(previousBtn), "Previous button is enabled by default");
+    }
+
+    public void clickOnNextBtn() {
+        click(nextBtn, "Next button");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void clickOnPrevBtn() {
+        click(previousBtn, "Previous button");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void verifyPagination(String pageNum) {
+        Assert.assertTrue(getText(totalPages, "Total Pages").contains("Page "+pageNum), "Page is not navigated to Next/Previous page");
     }
 }
