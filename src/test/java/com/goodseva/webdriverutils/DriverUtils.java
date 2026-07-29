@@ -7,6 +7,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -89,7 +90,7 @@ public class DriverUtils extends WebDriverHelper {
         WaitUtils.waitForElementClickable(element);
         highlightElement(element);
         String text = element.getText().trim();
-        log.info("GetText is: "+text);
+        log.info("GetText is: " + text);
         return text;
     }
 
@@ -196,14 +197,19 @@ public class DriverUtils extends WebDriverHelper {
     }
 
     public void selectDropdownValue(WebElement dropdownName, List<WebElement> dropdownOptions, String dropdownOptionToSelect, String message) {
+        boolean temp = false;
         click(dropdownName, message);
         WaitUtils.sleepFor(2000);
         for (int i = 0; i < dropdownOptions.size(); i++) {
             if (dropdownOptions.get(i).getText().trim().equalsIgnoreCase(dropdownOptionToSelect)) {
                 pressEnter();
+                temp = true;
                 break;
             }
             pressDownArrow();
+        }
+        if (!temp) {
+            Assert.fail("Given dropdown value '" + dropdownOptionToSelect + "' not exist in '" + message + "' dropdown");
         }
     }
 

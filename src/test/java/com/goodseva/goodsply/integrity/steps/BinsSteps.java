@@ -16,7 +16,7 @@ public class BinsSteps {
     public void addBin(DataTable dataTable) {
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
         for (Map<String, String> row : data) {
-            binsPage.createNewBin(row.get("BinCode"), row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Lever"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
+            binsPage.createNewBin(row.get("BinCode"), row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Level"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
         }
     }
 
@@ -24,7 +24,7 @@ public class BinsSteps {
     public void editBin(DataTable dataTable) {
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
         for (Map<String, String> row : data) {
-            binsPage.editBin(row.get("BinCode"), row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Lever"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
+            binsPage.editBin(row.get("BinCode"), row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Level"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
         }
     }
 
@@ -123,27 +123,7 @@ public class BinsSteps {
     public void verifyEditBin(DataTable dataTable) {
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
         for (Map<String, String> row : data) {
-            binsPage.verifyEditBinPage(row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Lever"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
+            binsPage.verifyEditBinPage(row.get("BinType"), row.get("Aisle"), row.get("Rack"), row.get("Shelf"), row.get("Level"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
         }
-    }
-
-    @Then("^Verify Previous button disabled by default in Bins page")
-    public void verifyPrevBtn() {
-        binsPage.verifyPrevBtn();
-    }
-
-    @When("^User click on Next button in Bins page")
-    public void clickNextBtn() {
-        binsPage.clickOnNextBtn();
-    }
-
-    @When("^User click on Previous button in Bins page")
-    public void clickPreviousBtn() {
-        binsPage.clickOnPrevBtn();
-    }
-
-    @Then("^Verify page navigated to page (.*) in Bins page")
-    public void verifyPagination(String pageNum) {
-        binsPage.verifyPagination(pageNum);
     }
 }

@@ -118,6 +118,11 @@ public class CommonPage extends DriverUtils {
         jsClick(bins, "Bins Link");
     }
 
+    public void openProductsAndSKUs() {
+        expandIntegrity();
+        jsClick(productsAndSKUs, "Products & SKUs Link");
+    }
+
     public void openProductsAndSKUsPage() {
         expandIntegrity();
         jsClick(productsAndSKUs, "Products And SKUs Link");

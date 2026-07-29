@@ -44,7 +44,7 @@ public class BinsPage extends DriverUtils {
     private List<WebElement> statusTableAllValues;
 
     @FindBy(how = How.XPATH, using = "//span[@data-component-name='SelectPrimitive.ItemText']")
-    private List<WebElement> filterByDropdownValues;
+    private List<WebElement> dropdownValues;
 
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-type']")
     private WebElement filterByTypeDropdown;
@@ -166,15 +166,6 @@ public class BinsPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "(//div//select)[3]/option")
     private List<WebElement> statusDropdownValues;
 
-    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-next-page']")
-    private WebElement nextBtn;
-
-    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-prev-page']")
-    private WebElement previousBtn;
-
-    @FindBy(how = How.XPATH, using = "//button[text()='Previous']/preceding::div[1]")
-    private WebElement totalPages;
-
     public String getTotalBins() throws InterruptedException {
         WaitUtils.sleepFor(2000);
         return getText(totalBins, "Total Bins").replaceAll("\\D+", "");
@@ -289,7 +280,7 @@ public class BinsPage extends DriverUtils {
     }
 
     public void searchWithZone() {
-        selectDropdownValue(filterByZoneDropdown, filterByDropdownValues, globalVariables.get("Zone").split("\\(")[0].trim(), "Search Zone dropdown");
+        selectDropdownValue(filterByZoneDropdown, dropdownValues, globalVariables.get("Zone").split("\\(")[0].trim(), "Search Zone dropdown");
         WaitUtils.waitForPageLoads();
         WaitUtils.sleepFor(2000);
     }
@@ -300,7 +291,7 @@ public class BinsPage extends DriverUtils {
     }
 
     public void searchWithType() {
-        selectDropdownValue(filterByTypeDropdown, filterByDropdownValues, globalVariables.get("Type"), "Search Type dropdown");
+        selectDropdownValue(filterByTypeDropdown, dropdownValues, globalVariables.get("Type"), "Search Type dropdown");
         WaitUtils.waitForPageLoads();
         WaitUtils.sleepFor(2000);
     }
@@ -311,7 +302,7 @@ public class BinsPage extends DriverUtils {
     }
 
     public void searchWithStatus() {
-        selectDropdownValue(filterByStatusDropdown, filterByDropdownValues, globalVariables.get("Status"), "Search Status dropdown");
+        selectDropdownValue(filterByStatusDropdown, dropdownValues, globalVariables.get("Status"), "Search Status dropdown");
         WaitUtils.waitForPageLoads();
         WaitUtils.sleepFor(2000);
     }
@@ -329,19 +320,19 @@ public class BinsPage extends DriverUtils {
         }
 
         if (searchField.equalsIgnoreCase("Zones")) {
-            selectDropdownValues(filterByZoneDropdown, filterByDropdownValues, "All Zones", "Search Zone dropdown");
+            selectDropdownValues(filterByZoneDropdown, dropdownValues, "All Zones", "Search Zone dropdown");
             WaitUtils.waitForPageLoads();
             WaitUtils.sleepFor(2000);
         }
 
         if (searchField.equalsIgnoreCase("Type")) {
-            selectDropdownValues(filterByTypeDropdown, filterByDropdownValues, "All Types", "Search dropdown");
+            selectDropdownValues(filterByTypeDropdown, dropdownValues, "All Types", "Search dropdown");
             WaitUtils.waitForPageLoads();
             WaitUtils.sleepFor(2000);
         }
 
         if (searchField.equalsIgnoreCase("Status")) {
-            selectDropdownValues(filterByStatusDropdown, filterByDropdownValues, "All Status", "Status dropdown");
+            selectDropdownValues(filterByStatusDropdown, dropdownValues, "All Status", "Status dropdown");
             WaitUtils.waitForPageLoads();
             WaitUtils.sleepFor(2000);
         }
@@ -421,25 +412,5 @@ public class BinsPage extends DriverUtils {
         Assert.assertTrue(pdfFileData.contains(capacity.toLowerCase()), "Capacity is wrong in PDF");
         Assert.assertTrue(pdfFileData.contains(status.toLowerCase()), "Status is wrong in PDF");
         Assert.assertTrue(pdfFileData.contains("scan before put-away and picking".toLowerCase()), "Footer is wrong in PDF");
-    }
-
-    public void verifyPrevBtn() {
-        Assert.assertFalse(isElementEnabled(previousBtn), "Previous button is enabled by default");
-    }
-
-    public void clickOnNextBtn() {
-        click(nextBtn, "Next button");
-        WaitUtils.waitForPageLoads();
-        WaitUtils.sleepFor(2000);
-    }
-
-    public void clickOnPrevBtn() {
-        click(previousBtn, "Previous button");
-        WaitUtils.waitForPageLoads();
-        WaitUtils.sleepFor(2000);
-    }
-
-    public void verifyPagination(String pageNum) {
-        Assert.assertTrue(getText(totalPages, "Total Pages").contains("Page "+pageNum), "Page is not navigated to Next/Previous page");
     }
 }

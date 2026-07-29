@@ -30,6 +30,8 @@ public class CommonSteps {
             commonPage.openPublishTripPage();
         } else if (page.equalsIgnoreCase("Bins")) {
             commonPage.openBinsPage();
+        } else if (page.equalsIgnoreCase("Products & SKUs")) {
+            commonPage.openProductsAndSKUs();
         } else {
             Assert.assertTrue(false, "Invalid Page name provided, Provided page name is: " + page);
         }

@@ -8,7 +8,7 @@ Feature: Bins Management
   @Bins01
   Scenario: Create, Update and Delete Bin and verify Search
     Given User Add new Bin
-      | BinCode       | BinType | Aisle | Rack | Shelf | Lever | Status    | Capacity | Pickable | Receivable |
+      | BinCode       | BinType | Aisle | Rack | Shelf | Level | Status    | Capacity | Pickable | Receivable |
       | Auto_BinCode_ | Floor   | AS001 | R001 | S001  | 5     | Available | 123      | Yes      | Yes        |
     Then Verify newly created Bin
       | Location          | Type  | Status    | Capacity | Pickable | Receivable |
@@ -26,13 +26,13 @@ Feature: Bins Management
     Then Verify search results with searched Status in Bins page
     When User reset Status search in Bins page
     When User Edit new Bin
-      | BinCode            | BinType | Aisle | Rack | Shelf | Lever | Status  | Capacity | Pickable | Receivable |
+      | BinCode            | BinType | Aisle | Rack | Shelf | Level | Status  | Capacity | Pickable | Receivable |
       | Auto_BinCode_Edit_ | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
     Then Verify newly edited Bin
       | Location           | Type | Status  | Capacity | Pickable | Receivable |
       | AS002-R002-S002-10 | bulk | blocked | 567.00   | No       | No         |
     Then Verify all edited fields in edit Bin page
-      | BinCode      | BinType | Aisle | Rack | Shelf | Lever | Status  | Capacity | Pickable | Receivable |
+      | BinCode      | BinType | Aisle | Rack | Shelf | Level | Status  | Capacity | Pickable | Receivable |
       | AutoVerified | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
     When User click on Delete in Bins page
     Then Verify Bin has deleted in Bins page
@@ -46,7 +46,7 @@ Feature: Bins Management
   @Bins03
   Scenario: Verify Print PDF file
     Given User Add new Bin
-      | BinCode       | BinType | Aisle | Rack | Shelf | Lever | Status    | Capacity | Pickable | Receivable |
+      | BinCode       | BinType | Aisle | Rack | Shelf | Level | Status    | Capacity | Pickable | Receivable |
       | Auto_BinCode_ | Bulk    | AS001 | R001 | S001  | 5     | Available | 130      | Yes      | Yes        |
     And User click on Print button
     Then Verify downloaded PDF file
