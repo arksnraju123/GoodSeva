@@ -21,7 +21,7 @@ public class CommonPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//button[@data-testid='button-prev-page']")
     private WebElement previousBtn;
 
-    @FindBy(how = How.XPATH, using = "//button[text()='Previous']/preceding::div[1]")
+    @FindBy(how = How.XPATH, using = "//button[text()='Previous']/preceding::*[1]")
     private WebElement totalPages;
 
     public void verifyPrevBtn() {

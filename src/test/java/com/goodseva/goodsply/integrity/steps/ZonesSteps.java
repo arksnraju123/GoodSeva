@@ -34,7 +34,7 @@ public class ZonesSteps {
     public void verifyNewZone(String action, DataTable dataTable) throws InterruptedException {
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
         for (Map<String, String> row : data) {
-            zonesPage.verifyZone(row.get("Facility"), row.get("ZoneName"), row.get("ZoneCode"), row.get("ZoneType"), row.get("Temperature"), row.get("MaximumCapacity"), row.get("Status"));
+            zonesPage.verifyZone(row.get("ZoneType"), row.get("Temperature"), row.get("MaximumCapacity"), row.get("Status"));
         }
     }
 

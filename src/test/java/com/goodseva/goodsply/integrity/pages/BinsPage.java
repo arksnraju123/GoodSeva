@@ -73,6 +73,9 @@ public class BinsPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[6]/div/div")
     private WebElement capacityFromTable;
 
+    @FindBy(how = How.XPATH, using = "//tbody//tr[@data-component-name='TableRow'][1]/td[6]/span")
+    private WebElement noCapacityFromTable;
+
     @FindBy(how = How.XPATH, using = "(//tbody//tr[@data-component-name='TableRow'][1]/td[7]//*[local-name()='svg'])[1]")
     private WebElement pickableOptionFromTable;
 
@@ -94,7 +97,7 @@ public class BinsPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//input[@data-testid='input-bin-code']")
     private WebElement binCodeTxtBox;
 
-    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-bin-type']")
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-bin-type']/following::select[1]")
     private WebElement binTypeDropdown;
 
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-bin-type']")
@@ -175,17 +178,21 @@ public class BinsPage extends DriverUtils {
         click(addBinButton, "Add Bin button");
         WaitUtils.sleepFor(2000);
         WaitUtils.waitForElementClickable(aisleTxtBox);
-        click(zoneDropdown, "");
-        String zoneValue = getText(zoneDropDownValues.get(1), "Zone");
-        pressEscape();
-        globalVariables.put("Zone", zoneValue);
-        selectDropdownValue(zoneDropdown, zoneDropDownValues, zoneValue, "Zone");
+        if (globalVariables.get("ZoneName") != null) {
+            selectDropdownValue(zoneDropdown, zoneDropDownValues, globalVariables.get("ZoneName"), "Zone");
+        } else {
+            click(zoneDropdown, "Zone dropdown");
+            String zoneValue = getText(zoneDropDownValues.get(1), "Zone");
+            pressEscape();
+            globalVariables.put("ZoneName", zoneValue);
+            selectDropdownValue(zoneDropdown, zoneDropDownValues, zoneValue, "Zone");
+        }
         String binCodeValue = binCode.concat(StringUtils.getRandomNumber());
         globalVariables.put("BinCode", binCodeValue);
         globalVariables.put("Type", binType);
         globalVariables.put("Status", status);
         enterText(binCodeTxtBox, binCodeValue, "Bin code");
-        selectDropdownValue(binTypeDropdown, binTypeDropdownValues, binType, "Bin Type");
+        selectDropdownValueByVisibleText(binTypeDropdown, binType, "Bin Type");
         enterText(aisleTxtBox, aisle, "Aisle");
         enterText(rackTxtBox, rack, "Rack");
         enterText(shelfTxtBox, shelf, "Shelf");
@@ -215,10 +222,35 @@ public class BinsPage extends DriverUtils {
     public void verifyBin(String location, String type, String status, String capacity, String pickable, String receivable) {
         Assert.assertEquals(getText(binCodeFromTable, "Bin code"), globalVariables.get("BinCode"), "BinCode is wrong");
         Assert.assertEquals(getText(locationFromTable, "Location"), location, "Location is wrong");
-        Assert.assertTrue(globalVariables.get("Zone").contains(getText(zoneFromTable, "Zone")), "Zone is wrong");
-        Assert.assertEquals(getText(typeFromTable, "Zone"), type, "Type is wrong");
+        Assert.assertTrue(globalVariables.get("ZoneName").contains(getText(zoneFromTable, "Zone")), "Zone is wrong");
+        Assert.assertEquals(getText(typeFromTable, "Type"), type, "Type is wrong");
         Assert.assertEquals(getText(statusFromTable, "Status"), status, "Status is wrong");
         Assert.assertTrue(getText(capacityFromTable, "Capacity").contains(capacity), "Capacity is wrong");
+        if (pickable.equalsIgnoreCase("Yes")) {
+            Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Pickable", "Pickable is wrong");
+        } else {
+            Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Not Pickable", "Pickable is wrong");
+        }
+
+        if (receivable.equalsIgnoreCase("Yes")) {
+            Assert.assertEquals(getAttribute(receivableOptionFromTable, "title"), "Receivable", "Receivable is wrong");
+        } else {
+            Assert.assertEquals(getAttribute(receivableOptionFromTable, "title"), "Not Receivable", "Receivable is wrong");
+        }
+    }
+
+    public void verifyBinCreatedInFacilities(String location, String type, String status, String capacity, String pickable, String receivable) {
+        Assert.assertEquals(getText(binCodeFromTable, "Bin code"), globalVariables.get("BinCode"), "BinCode is wrong");
+        Assert.assertEquals(getText(locationFromTable, "Location"), location, "Location is wrong");
+        Assert.assertTrue(getText(zoneFromTable, "Zone").contains(globalVariables.get("ZoneName")), "Zone is wrong");
+        Assert.assertTrue(getText(zoneFacilityFromTable, "Zone Facility").contains(globalVariables.get("Facility")), "Facility is wrong");
+        Assert.assertEquals(getText(typeFromTable, "Type"), type, "Type is wrong");
+        Assert.assertEquals(getText(statusFromTable, "Status"), status, "Status is wrong");
+        if (capacity.equalsIgnoreCase("No limit")) {
+            Assert.assertTrue(getText(noCapacityFromTable, "Capacity").contains(capacity), "Capacity is wrong");
+        } else {
+            Assert.assertTrue(getText(capacityFromTable, "Capacity").contains(capacity), "Capacity is wrong");
+        }
         if (pickable.equalsIgnoreCase("Yes")) {
             Assert.assertEquals(getAttribute(pickableOptionFromTable, "title"), "Pickable", "Pickable is wrong");
         } else {
@@ -280,14 +312,14 @@ public class BinsPage extends DriverUtils {
     }
 
     public void searchWithZone() {
-        selectDropdownValue(filterByZoneDropdown, dropdownValues, globalVariables.get("Zone").split("\\(")[0].trim(), "Search Zone dropdown");
+        selectDropdownValue(filterByZoneDropdown, dropdownValues, globalVariables.get("ZoneName").split("\\(")[0].trim(), "Search Zone dropdown");
         WaitUtils.waitForPageLoads();
         WaitUtils.sleepFor(2000);
     }
 
     public void verifySearchZone() {
         List<String> allValues = getAllElementsValues(zoneTableAllValues);
-        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("Zone").split("\\(")[0].trim())), "Search not worked correctly when search with Zone");
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("ZoneName").split("\\(")[0].trim())), "Search not worked correctly when search with Zone");
     }
 
     public void searchWithType() {
@@ -347,7 +379,7 @@ public class BinsPage extends DriverUtils {
         globalVariables.replace("Type", binType);
         globalVariables.replace("Status", status);
         enterText(binCodeTxtBox, binCodeValue, "Bin code");
-        selectDropdownValue(binTypeDropdown, binTypeDropdownValues, binType, "Bin Type");
+        selectDropdownValueByVisibleText(binTypeDropdown, binType, "Bin Type");
         enterText(aisleTxtBox, aisle, "Aisle");
         enterText(rackTxtBox, rack, "Rack");
         enterText(shelfTxtBox, shelf, "Shelf");

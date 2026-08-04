@@ -34,7 +34,7 @@ Feature: Bins Management
     Then Verify all edited fields in edit Bin page
       | BinCode      | BinType | Aisle | Rack | Shelf | Level | Status  | Capacity | Pickable | Receivable |
       | AutoVerified | Bulk    | AS002 | R002 | S002  | 10    | Blocked | 567      | No       | No         |
-    When User click on Delete in Bins page
+    When User delete Bin in Bins page
     Then Verify Bin has deleted in Bins page
 
   @Bins02

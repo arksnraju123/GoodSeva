@@ -25,3 +25,18 @@ Feature: Manage Zones Management
       | 2        | Auto_Zone_Update_Name_ | AUTO_ZONE_UPDATED_CODE_ | Storage  | Chilled     | 200             | Inactive |
     When User Delete Zone
     Then Verify Zone has deleted
+
+  @Zones02
+  Scenario: Verify pagination
+    Then Verify Previous button disabled by default in Zones page
+    When User click on Next button in Zones page
+    Then Verify page navigated to page 2 in Zones page
+    When User click on Previous button in Zones page
+    Then Verify page navigated to page 1 in Zones page
+
+  @Zones03
+  Scenario: Verify Filters
+    Given User click on Add Zone button
+    When User create new Zone with bellow data
+      | Facility | ZoneName        | ZoneCode        | ZoneType | Temperature | MaximumCapacity | Status |
+      | 1        | Auto_Zone_Name_ | AUTO_ZONE_CODE_ | Shipping | Frozen      | 100             | Active |

@@ -26,6 +26,12 @@ public class ZonesPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-facility']/following-sibling::select")
     private WebElement facilityDropdown;
 
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-facility']")
+    private WebElement facilityDropdownToOpen;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-facility']/following-sibling::select/option")
+    private List<WebElement> facilityDropdownOptions;
+
     @FindBy(how = How.XPATH, using = "//input[@data-testid='input-zone-name']")
     private WebElement zoneNameTxtBox;
 
@@ -65,6 +71,9 @@ public class ZonesPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//tbody/tr[1]/td[4]/div/div")
     private WebElement tableTemperature;
 
+    @FindBy(how = How.XPATH, using = "//tbody/tr[1]/td[4]/span")
+    private WebElement tableTemperatureBlank;
+
     @FindBy(how = How.XPATH, using = "//tbody/tr[1]/td[5]/div/div")
     private WebElement tableCapacity;
 
@@ -84,19 +93,38 @@ public class ZonesPage extends DriverUtils {
         click(addZoneButton, "Add Zone button");
     }
 
-    public void createUpdateNewZone(String facility, String zoneName, String zoneCode, String zoneType, String temperature, String maximumCapacity, String status) throws InterruptedException {
+    public void createUpdateNewZone(String facility, String zoneName, String zoneCode, String zoneType, String temperature, String maximumCapacity, String status) {
         String zoneNameValue = zoneName + StringUtils.getRandomNumber();
         String zoneCodeValue = zoneCode + StringUtils.getRandomNumber();
-        globalVariables.clear();
-        globalVariables.put("Zone Name", zoneNameValue);
-        globalVariables.put("Zone Code", zoneCodeValue);
+        globalVariables.put("ZoneName", zoneNameValue);
+        globalVariables.put("ZoneCode", zoneCodeValue);
         WaitUtils.sleepFor(3000);
-        selectDropdownValueByIndex(facilityDropdown, facility, "Facility Dropdown");
-        globalVariables.put("Facility", getDropdownValueByIndex(facilityDropdown, facility));
-        clearData(zoneNameTxtBox, "Zone Name");
-        enterText(zoneNameTxtBox, zoneNameValue, "Zone Name");
-        clearData(zoneCodeTxtBox, "Zone Code");
-        enterText(zoneCodeTxtBox, zoneCodeValue, "Zone Code");
+        if (!facility.matches("[0-9]+")) {
+            if (facility.equalsIgnoreCase("AutoSelect")) {
+                selectDropdownValue(facilityDropdownToOpen, facilityDropdownOptions, globalVariables.get("Facility"), "Facility Dropdown");
+            } else {
+                selectDropdownValueByVisibleText(facilityDropdown, facility, "Facility Dropdown");
+            }
+        } else {
+            selectDropdownValueByIndex(facilityDropdown, facility, "Facility Dropdown");
+        }
+        if (!facility.equalsIgnoreCase("_IGNORE_")) {
+            if (facility.matches("[0-9]+")) {
+                if (facility.equalsIgnoreCase("AutoSelect")) {
+                    globalVariables.put("Facility", getDropdownValueByIndex(facilityDropdown, globalVariables.get("Facility")));
+                } else {
+                    globalVariables.put("Facility", getDropdownValueByIndex(facilityDropdown, facility));
+                }
+            } else {
+                if (!facility.equalsIgnoreCase("AutoSelect")) {
+                    globalVariables.put("Facility", facility);
+                }
+            }
+        }
+        clearData(zoneNameTxtBox, "ZoneName");
+        enterText(zoneNameTxtBox, zoneNameValue, "ZoneName");
+        clearData(zoneCodeTxtBox, "ZoneCode");
+        enterText(zoneCodeTxtBox, zoneCodeValue, "ZoneCode");
         selectDropdownValueByVisibleText(zoneTypeDropdown, zoneType, "Zone Type Dropdown");
         selectDropdownValueByVisibleText(temperatureDropdown, temperature, "Temperature Dropdown");
         clearData(maximumCapacityTxtBox, "Maximum Capacity");
@@ -112,10 +140,11 @@ public class ZonesPage extends DriverUtils {
         }
 
         click(createZoneBtn, "Create/Update Zone");
+        WaitUtils.waitForInvisibilityOfElement(createZoneBtn);
     }
 
     public void searchZone() {
-        enterText(searchZoneTxtBox, globalVariables.get("Zone Name"), "Search Zone");
+        enterText(searchZoneTxtBox, globalVariables.get("ZoneName"), "Search Zone");
         WaitUtils.waitForPageLoads();
     }
 
@@ -124,12 +153,16 @@ public class ZonesPage extends DriverUtils {
         WaitUtils.waitForPageLoads();
     }
 
-    public void verifyZone(String facility, String zoneName, String zoneCode, String zoneType, String temperature, String maximumCapacity, String status) throws InterruptedException {
-        Assert.assertEquals(getText(tableZoneName, "Zone name in table"), globalVariables.get("Zone Name"), "Wrong Zone name displayed");
-        Assert.assertEquals(getText(tableZoneCode, "Zone code in table"), globalVariables.get("Zone Code"), "Wrong Zone code displayed");
+    public void verifyZone(String zoneType, String temperature, String maximumCapacity, String status) {
+        Assert.assertEquals(getText(tableZoneName, "Zone name in table"), globalVariables.get("ZoneName"), "Wrong Zone name displayed");
+        Assert.assertEquals(getText(tableZoneCode, "Zone code in table"), globalVariables.get("ZoneCode"), "Wrong Zone code displayed");
         Assert.assertEquals(getText(tableZoneFacility, "Zone Facility in table"), globalVariables.get("Facility"), "Wrong facility displayed");
         Assert.assertEquals(getText(tableType, "Type in table").toLowerCase(), zoneType.toLowerCase(), "Wrong Type displayed");
-        Assert.assertEquals(getText(tableTemperature, "Temperature in table").toLowerCase(), temperature.toLowerCase(), "Wrong Temperature displayed");
+        if (temperature.equalsIgnoreCase("-")) {
+            Assert.assertEquals(getText(tableTemperatureBlank, "Temperature in table").toLowerCase(), temperature.toLowerCase(), "Wrong Temperature displayed");
+        } else {
+            Assert.assertEquals(getText(tableTemperature, "Temperature in table").toLowerCase(), temperature.toLowerCase(), "Wrong Temperature displayed");
+        }
         Assert.assertTrue(getText(tableCapacity, "Capacity in table").contains(maximumCapacity), "Wrong Capacity displayed");
         Assert.assertEquals(getText(tableZoneStatus, "Status in table"), status, "Wrong Status displayed");
     }
@@ -141,7 +174,7 @@ public class ZonesPage extends DriverUtils {
         WaitUtils.sleepFor(3000);
     }
 
-    public void verifyZoneDeleted(){
+    public void verifyZoneDeleted() {
         Assert.assertEquals(allZones.size(), 0, "Zone has not deleted");
     }
 

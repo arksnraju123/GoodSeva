@@ -36,6 +36,11 @@ public class WaitUtils extends WebDriverHelper {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
+    public static void waitForInvisibilityOfElement(WebElement element) {
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
     public static void waitForAlert() {
         wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         wait.until(ExpectedConditions.alertIsPresent());
@@ -90,7 +95,7 @@ public class WaitUtils extends WebDriverHelper {
 
         while (attempts < 5) {
             try {
-                System.out.println("attempts: "+attempts);
+                System.out.println("attempts: " + attempts);
                 element = getDriver().findElement(elementValue);
                 System.out.println("Element found");
                 if (element.isDisplayed()) {
@@ -105,7 +110,7 @@ public class WaitUtils extends WebDriverHelper {
         throw new RuntimeException("Element never stabilized after " + 5 + " retries: " + message);
     }
 
-    public static void sleepFor(int time){
+    public static void sleepFor(int time) {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {

@@ -24,8 +24,10 @@ public class DriverUtils extends WebDriverHelper {
         log.info("Entering " + text + " in " + elementName);
         WaitUtils.waitForElementClickable(element);
         highlightElement(element);
-        clearData(element, elementName);
-        element.sendKeys(text);
+        if (!text.equalsIgnoreCase("_IGNORE_")) {
+            clearData(element, elementName);
+            element.sendKeys(text);
+        }
     }
 
     public void enterTextUsingJS(WebElement element, String text, String elementName) {
@@ -138,16 +140,41 @@ public class DriverUtils extends WebDriverHelper {
         log.info("Selecting " + dropdownValue + " from " + dropdownName);
         WaitUtils.waitForElementClickable(element);
         highlightElement(element);
+        if (!dropdownValue.equalsIgnoreCase("_IGNORE_")) {
+            Select select = new Select(element);
+            select.selectByVisibleText(dropdownValue);
+        }
+    }
+
+    public String getDropdownValueIndex(WebElement element, String dropdownValue, String dropdownName) {
+        log.info("Selecting " + dropdownValue + " from " + dropdownName);
+        WaitUtils.waitForElementClickable(element);
+        highlightElement(element);
         Select select = new Select(element);
-        select.selectByVisibleText(dropdownValue);
+        int index = -1;
+        List<WebElement> options = select.getOptions();
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).getText().equalsIgnoreCase(dropdownValue)) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            log.info("Index of '" + dropdownValue + "' is: " + index);
+        } else {
+            log.info("Text not found in dropdown");
+        }
+        return String.valueOf(index);
     }
 
     public void selectDropdownValueByIndex(WebElement element, String index, String dropdownName) {
         WaitUtils.waitForElementClickable(element);
         highlightElement(element);
-        Select select = new Select(element);
-        log.info("Selecting " + select.getOptions().get(Integer.parseInt(index)).getText() + " from " + dropdownName);
-        select.selectByIndex(Integer.parseInt(index));
+        if (!index.equalsIgnoreCase("_IGNORE_")) {
+            Select select = new Select(element);
+            log.info("Selecting " + select.getOptions().get(Integer.parseInt(index)).getText() + " from " + dropdownName);
+            select.selectByIndex(Integer.parseInt(index));
+        }
     }
 
     public String getDropdownValueByIndex(WebElement element, String index) {
@@ -201,7 +228,7 @@ public class DriverUtils extends WebDriverHelper {
         click(dropdownName, message);
         WaitUtils.sleepFor(2000);
         for (int i = 0; i < dropdownOptions.size(); i++) {
-            if (dropdownOptions.get(i).getText().trim().equalsIgnoreCase(dropdownOptionToSelect)) {
+            if (dropdownOptions.get(i).getText().trim().toLowerCase().contains(dropdownOptionToSelect.toLowerCase())) {
                 pressEnter();
                 temp = true;
                 break;
@@ -243,6 +270,12 @@ public class DriverUtils extends WebDriverHelper {
         WaitUtils.waitForAlert();
         getDriver().switchTo().alert().dismiss();
         WaitUtils.sleepFor(2000);
+    }
+
+    public String getAlertText() {
+        log.info("Accepting alert");
+        WaitUtils.waitForAlert();
+        return getDriver().switchTo().alert().getText();
     }
 
     public boolean isElementEnabled(WebElement element) {

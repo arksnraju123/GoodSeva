@@ -36,6 +36,14 @@ public class BinsSteps {
         }
     }
 
+    @Then("^Verify newly (.*) Bin from Facilities$")
+    public void verifyBinCreatedInFacilities(String action, DataTable dataTable) {
+        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+        for (Map<String, String> row : data) {
+            binsPage.verifyBinCreatedInFacilities(row.get("Location"), row.get("Type"), row.get("Status"), row.get("Capacity"), row.get("Pickable"), row.get("Receivable"));
+        }
+    }
+
     @When("^User search with Bin Name in Bins page$")
     public void searchWithBinName() {
         binsPage.searchWithBinName();
@@ -96,7 +104,7 @@ public class BinsSteps {
         binsPage.verifyNoBinMessage();
     }
 
-    @When("^User click on Delete in Bins page")
+    @When("^User delete Bin in Bins page")
     public void clickOnDelete() {
         binsPage.deleteBin();
     }
