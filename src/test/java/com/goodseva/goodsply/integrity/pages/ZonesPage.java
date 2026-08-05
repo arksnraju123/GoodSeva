@@ -56,6 +56,15 @@ public class ZonesPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//input[@data-testid='input-search-zones']")
     private WebElement searchZoneTxtBox;
 
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-facility']")
+    private WebElement filterFacilityDropdown;
+
+    @FindBy(how = How.XPATH, using = "//button[@data-testid='select-filter-type']")
+    private WebElement filterTypeDropdown;
+
+    @FindBy(how = How.XPATH, using = "//span[@data-component-name='SelectPrimitive.ItemText']")
+    private List<WebElement> dropdownValues;
+
     @FindBy(how = How.XPATH, using = "//tbody/tr[1]/td[1]//div[@class='font-medium']")
     private WebElement tableZoneName;
 
@@ -86,8 +95,17 @@ public class ZonesPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//tbody/tr[1]/td[7]//button[2]")
     private WebElement deleteBnt;
 
-    @FindBy(how = How.XPATH, using = "//tbody/tr[1]/td[2]")
-    private List<WebElement> allZones;
+    @FindBy(how = How.XPATH, using = "//tbody/tr/td[2]")
+    private List<WebElement> allTableFacilities;
+
+    @FindBy(how = How.XPATH, using = "//tbody/tr/td[1]//div[@class='font-medium']")
+    private List<WebElement> allTableZoneNames;
+
+    @FindBy(how = How.XPATH, using = "//tbody/tr/td[1]//div[@class='text-sm text-muted-foreground']")
+    private List<WebElement> allTableZoneCodes;
+
+    @FindBy(how = How.XPATH, using = "//tbody/tr/td[3]/div")
+    private List<WebElement> allTableTypes;
 
     public void clickOnAddZone() {
         click(addZoneButton, "Add Zone button");
@@ -98,6 +116,7 @@ public class ZonesPage extends DriverUtils {
         String zoneCodeValue = zoneCode + StringUtils.getRandomNumber();
         globalVariables.put("ZoneName", zoneNameValue);
         globalVariables.put("ZoneCode", zoneCodeValue);
+        globalVariables.put("ZoneType", zoneType);
         WaitUtils.sleepFor(3000);
         if (!facility.matches("[0-9]+")) {
             if (facility.equalsIgnoreCase("AutoSelect")) {
@@ -148,6 +167,23 @@ public class ZonesPage extends DriverUtils {
         WaitUtils.waitForPageLoads();
     }
 
+    public void searchZoneCode() {
+        enterText(searchZoneTxtBox, globalVariables.get("ZoneCode"), "Search Zone Code");
+        WaitUtils.waitForPageLoads();
+    }
+
+    public void searchForFacility() {
+        selectDropdownValue(filterFacilityDropdown, dropdownValues, globalVariables.get("Facility"), "Search Facility dropdown");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
+    public void searchForType() {
+        selectDropdownValue(filterTypeDropdown, dropdownValues, globalVariables.get("ZoneType"), "Search Type dropdown");
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
+
     public void editZone() {
         click(editBnt, "Edit Zone");
         WaitUtils.waitForPageLoads();
@@ -167,7 +203,7 @@ public class ZonesPage extends DriverUtils {
         Assert.assertEquals(getText(tableZoneStatus, "Status in table"), status, "Wrong Status displayed");
     }
 
-    public void deleteZone() throws InterruptedException {
+    public void deleteZone() {
         click(deleteBnt, "Delete Zone");
         WaitUtils.waitForAlert();
         acceptAlert();
@@ -175,11 +211,51 @@ public class ZonesPage extends DriverUtils {
     }
 
     public void verifyZoneDeleted() {
-        Assert.assertEquals(allZones.size(), 0, "Zone has not deleted");
+        Assert.assertEquals(allTableFacilities.size(), 0, "Zone has not deleted");
     }
 
-    public String getTotalZones() throws InterruptedException {
+    public String getTotalZones() {
         WaitUtils.sleepFor(2000);
         return getText(totalZones, "Total Zones").replaceAll("\\D+", "");
+    }
+
+    public void verifyZoneSearch() {
+        List<String> allValues = getAllElementsValues(allTableZoneNames);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("ZoneName"))), "Search not worked correctly when search with ZoneName");
+    }
+
+    public void verifyZoneCodeSearch() {
+        List<String> allValues = getAllElementsValues(allTableZoneCodes);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("ZoneCode"))), "Search not worked correctly when search with ZoneCode");
+    }
+
+    public void resetSearch(String searchField) {
+        if (searchField.equalsIgnoreCase("Zone") || searchField.equalsIgnoreCase("Zone Code")) {
+            clearData(searchZoneTxtBox, "Zone textbox");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+
+        if (searchField.equalsIgnoreCase("Facility")) {
+            selectDropdownValues(filterFacilityDropdown, dropdownValues, "All Facilities", "Search Facility dropdown");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+
+        if (searchField.equalsIgnoreCase("Type")) {
+            selectDropdownValues(filterTypeDropdown, dropdownValues, "All Types", "Type Search dropdown");
+            WaitUtils.waitForPageLoads();
+            WaitUtils.sleepFor(2000);
+        }
+    }
+
+    public void verifyFacilitySearch() {
+        List<String> allValues = getAllElementsValues(allTableFacilities);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("Facility"))), "Search not worked correctly when search with Facility");
+    }
+
+    public void verifyTypeSearch() {
+        List<String> allValues = getAllElementsValues(allTableTypes);
+        Assert.assertTrue(allValues.stream().allMatch(s -> s.contains(globalVariables.get("ZoneType").toLowerCase())), "Search not worked correctly when search with Type");
     }
 }

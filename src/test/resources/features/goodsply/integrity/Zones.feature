@@ -39,4 +39,15 @@ Feature: Manage Zones Management
     Given User click on Add Zone button
     When User create new Zone with bellow data
       | Facility | ZoneName        | ZoneCode        | ZoneType | Temperature | MaximumCapacity | Status |
-      | 1        | Auto_Zone_Name_ | AUTO_ZONE_CODE_ | Shipping | Frozen      | 100             | Active |
+      | 1        | Auto_Zone_Name_ | AUTO_ZONE_CODE_ | Storage  | Frozen      | 100             | Active |
+    And User search for Zone
+    Then Verify search results with searched Zone in Zones page
+    When User reset Zone search in Zones page
+    And User search for Zone Code
+    Then Verify search results with searched Zone Code in Zones page
+    When User reset Zone Code search in Zones page
+    And User search for Facility
+    Then Verify search results with searched Facility in Zones page
+    When User reset Facility search in Zones page
+    And User search for Type
+    Then Verify search results with searched Type in Zones page
