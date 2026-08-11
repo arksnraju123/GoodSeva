@@ -15,10 +15,10 @@ public class CommonPage extends DriverUtils {
         PageFactory.initElements(webDriver, this);
     }
 
-    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-next-page']")
+    @FindBy(how = How.XPATH, using = "//button[contains(@data-testid, '-next-page')]")
     private WebElement nextBtn;
 
-    @FindBy(how = How.XPATH, using = "//button[@data-testid='button-prev-page']")
+    @FindBy(how = How.XPATH, using = "//button[contains(@data-testid, '-prev-page')]")
     private WebElement previousBtn;
 
     @FindBy(how = How.XPATH, using = "//button[text()='Previous']/preceding::*[1]")

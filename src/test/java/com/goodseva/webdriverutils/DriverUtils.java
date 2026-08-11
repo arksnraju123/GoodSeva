@@ -226,7 +226,10 @@ public class DriverUtils extends WebDriverHelper {
     public void selectDropdownValue(WebElement dropdownName, List<WebElement> dropdownOptions, String dropdownOptionToSelect, String message) {
         boolean temp = false;
         click(dropdownName, message);
-        WaitUtils.sleepFor(2000);
+        WaitUtils.sleepFor(1000);
+        dropdownOptions.get(0).click();
+        click(dropdownName, message);
+        WaitUtils.sleepFor(1000);
         for (int i = 0; i < dropdownOptions.size(); i++) {
             if (dropdownOptions.get(i).getText().trim().toLowerCase().contains(dropdownOptionToSelect.toLowerCase())) {
                 pressEnter();
