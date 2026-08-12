@@ -124,4 +124,14 @@ public class PurchaseOrdersSteps {
     public void verifyTotalPurchaseOrders() {
         purchaseOrdersPage.verifyTotalPurchaseOrders();
     }
+
+    @Then("^Verify total Issued$")
+    public void verifyTotalIssued() {
+        purchaseOrdersPage.verifyTotalIssued();
+    }
+
+    @Then("^Verify Total Value$")
+    public void verifyTotalValue() {
+        purchaseOrdersPage.verifyTotalValue();
+    }
 }

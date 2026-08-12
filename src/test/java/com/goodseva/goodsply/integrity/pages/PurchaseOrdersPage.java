@@ -11,7 +11,11 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Locale;
 
 public class PurchaseOrdersPage extends DriverUtils {
     public PurchaseOrdersPage(WebDriver webDriver) {
@@ -53,6 +57,9 @@ public class PurchaseOrdersPage extends DriverUtils {
 
     @FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/div")
     private List<WebElement> allTableStatus;
+
+    @FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/div[text()='issued']")
+    private List<WebElement> allTableIssuedStatus;
 
     @FindBy(how = How.XPATH, using = "//button[@data-testid='select-vendor']")
     private WebElement vendorDropdownOnPOPopup;
@@ -307,5 +314,70 @@ public class PurchaseOrdersPage extends DriverUtils {
         String totalFromPagination = getText(totalPages, "Total Pages").split("\\(")[1].split(" ")[0];
         String totalPOsCount = getText(totalPurchaseOrdersCount, "Total PO Count");
         Assert.assertEquals(totalFromPagination, totalPOsCount, "Total POs count mismatched in Total count and pagination");
+    }
+
+    public void verifyTotalIssued() {
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+        String totalIssuedCountValue = getText(totalIssuedCount, "Total Issued Count");
+        String totalPagesFromPagination = getText(totalPages, "Total Pages").split(" ")[3];
+        int tempIssuedCount = 0;
+        CommonPage commonPage = new CommonPage(getDriver());
+        for (int i = 0; i < Integer.parseInt(totalPagesFromPagination); i++) {
+            log.info("Getting all Issued status count from page " + (i + 1));
+            tempIssuedCount = tempIssuedCount + allTableIssuedStatus.size();
+            if (i != Integer.parseInt(totalPagesFromPagination) - 1) {
+                commonPage.clickOnNextBtn();
+            }
+        }
+        Assert.assertEquals(totalIssuedCountValue, String.valueOf(tempIssuedCount), "Total Issued count mismatched");
+    }
+
+    public void verifyTotalValue() {
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+        String totalValueCountValue = getText(totalValueCount, "Total Value Count");
+        String totalPagesFromPagination = getText(totalPages, "Total Pages").split(" ")[3];
+        boolean match = validateTotal(Integer.parseInt(totalPagesFromPagination), totalValueCountValue);
+        Assert.assertTrue(match, "Total value is incorrect");
+    }
+
+    public boolean validateTotal(int totalPagesFromPagination, String expectedText) {
+        CommonPage commonPage = new CommonPage(getDriver());
+        BigDecimal actualTotal = BigDecimal.ZERO;
+
+        for (int i = 0; i < totalPagesFromPagination; i++) {
+            for (WebElement el : allTableAmount) {
+                String amountText = el.getText().replace("₹", "").trim();
+                if (!amountText.isEmpty()) {
+                    try {
+                        Number number = NumberFormat.getNumberInstance(new Locale("en", "IN"))
+                                .parse(amountText);
+                        BigDecimal amount = new BigDecimal(number.toString());
+                        actualTotal = actualTotal.add(amount);
+                    } catch (ParseException e) {
+                        log.error("Failed to parse amount: " + amountText);
+                    }
+                }
+            }
+
+            if (i != totalPagesFromPagination - 1) {
+                commonPage.clickOnNextBtn();
+            }
+        }
+
+        // Convert expected into rupees
+        String cleanExpected = expectedText.replace("₹", "").replace("L", "").trim();
+        BigDecimal expectedInRupees = new BigDecimal(cleanExpected).multiply(new BigDecimal("100000"));
+
+        // Allow tolerance of ±5000 rupees
+        BigDecimal diff = actualTotal.subtract(expectedInRupees).abs();
+        boolean match = diff.compareTo(new BigDecimal("5000")) <= 0;
+
+        log.info("Expected (in rupees): " + expectedInRupees);
+        log.info("Actual (in rupees):   " + actualTotal);
+        log.info("Difference:           " + diff);
+
+        return match;
     }
 }

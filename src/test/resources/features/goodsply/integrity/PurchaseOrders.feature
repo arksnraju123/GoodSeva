@@ -69,3 +69,11 @@ Feature: Purchase Orders
   Scenario: Verify Total Purchase Orders
     Then Verify total Purchase Orders
 
+  @PurchaseOrders06
+  Scenario: Verify Total Issued
+    Then Verify total Issued
+
+  @PurchaseOrders07
+  Scenario: Verify Total Value
+    Then Verify Total Value
+
