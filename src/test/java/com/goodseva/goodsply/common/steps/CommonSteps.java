@@ -36,6 +36,8 @@ public class CommonSteps {
             commonPage.openFacilitiesPage();
         } else if (page.equalsIgnoreCase("Purchase Orders")) {
             commonPage.openPurchaseOrdersPage();
+        }else if (page.equalsIgnoreCase("Inbound Deliveries")) {
+            commonPage.openInboundDeliveriesPage();
         } else {
             Assert.fail("Invalid Page name provided, Provided page name is: " + page);
         }

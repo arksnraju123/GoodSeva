@@ -176,9 +176,11 @@ public class PurchaseOrdersPage extends DriverUtils {
         String oldPOOrder = getText(allTablePOOrders.get(0), "Purchase order from table").split("-")[2];
         String newPOOrder = "PO-".concat(DateTimeUtils.getFutureDate(0, "YY")).concat("-" + String.format("%0" + oldPOOrder.length() + "d", Integer.parseInt(oldPOOrder) + 1));
         globalVariables.put("PurchaseOrder", newPOOrder);
+        globalVariables.put("Vendor", vendor);
         click(createPOButton, "Create PO");
         selectDropdownValue(vendorDropdownOnPOPopup, dropdownValues, vendor, "Vendor dropdown");
         exptDeliveryDate = DateTimeUtils.getFutureDate(Integer.parseInt(exptDeliveryDate.split("\\+")[1]), "dd-MM-yyyy");
+        globalVariables.put("ExpectDeliveryDate", exptDeliveryDate);
         enterText(expectedDeliveryDate, exptDeliveryDate, "Expected Delivery Date");
         selectDropdownValue(paymentTerms, dropdownValues, pmtTerms, "Payment Terms dropdown");
         enterText(descriptionTextbox, description, "Description");
