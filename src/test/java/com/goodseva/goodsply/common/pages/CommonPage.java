@@ -172,4 +172,9 @@ public class CommonPage extends DriverUtils {
         jsClick(publishTrip, "Publish Trip Link");
     }
 
+    public void refreshPage() {
+        getDriver().navigate().refresh();
+        WaitUtils.waitForPageLoads();
+        WaitUtils.sleepFor(2000);
+    }
 }

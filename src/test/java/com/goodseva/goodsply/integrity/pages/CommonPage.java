@@ -43,4 +43,8 @@ public class CommonPage extends DriverUtils {
     public void verifyPagination(String pageNum) {
         Assert.assertTrue(getText(totalPages, "Total Pages").contains("Page "+pageNum), "Page is not navigated to Next/Previous page");
     }
+
+    public String getTotalPages(){
+        return getText(totalPages, "Total Pages");
+    }
 }

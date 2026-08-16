@@ -3,6 +3,7 @@ package com.goodseva.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -39,10 +40,20 @@ public class DateTimeUtils {
         return futureTime.format(formatter);
     }
 
-    public static String convertTime(String inputTime, String inputTimeFormat, String outputTimeFormat){
+    public static String convertTime(String inputTime, String inputTimeFormat, String outputTimeFormat) {
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern(inputTimeFormat);
         LocalTime time = LocalTime.parse(inputTime, inputFormatter);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(outputTimeFormat);
         return time.format(outputFormatter);
+    }
+
+    public static String convertDateFormat(String inputDate, String inputDateFormat, String outputDateFormat) {
+        // Parse using original format
+        DateTimeFormatter originalFormat = DateTimeFormatter.ofPattern(inputDateFormat);
+        LocalDate date = LocalDate.parse(inputDate, originalFormat);
+
+        // Convert to new format
+        DateTimeFormatter newFormat = DateTimeFormatter.ofPattern(outputDateFormat);
+        return date.format(newFormat);
     }
 }

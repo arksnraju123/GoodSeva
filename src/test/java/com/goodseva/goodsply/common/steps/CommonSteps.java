@@ -47,4 +47,9 @@ public class CommonSteps {
     public void loginIntoGoodsPly() {
         commonPage.loginGoodsPly();
     }
+
+    @Given("^User refresh the page$")
+    public void refreshPage() {
+        commonPage.refreshPage();
+    }
 }
