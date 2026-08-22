@@ -15,10 +15,10 @@ public class CommonPage extends DriverUtils {
         PageFactory.initElements(webDriver, this);
     }
 
-    @FindBy(how = How.XPATH, using = "//button[contains(@data-testid, '-next-page')]")
+    @FindBy(how = How.XPATH, using = "//button[text()='Next']")
     private WebElement nextBtn;
 
-    @FindBy(how = How.XPATH, using = "//button[contains(@data-testid, '-prev-page')]")
+    @FindBy(how = How.XPATH, using = "//button[text()='Previous']")
     private WebElement previousBtn;
 
     @FindBy(how = How.XPATH, using = "//button[text()='Previous']/preceding::*[1]")
@@ -41,10 +41,12 @@ public class CommonPage extends DriverUtils {
     }
 
     public void verifyPagination(String pageNum) {
-        Assert.assertTrue(getText(totalPages, "Total Pages").contains("Page "+pageNum), "Page is not navigated to Next/Previous page");
+        boolean pages1 = getText(totalPages, "Total Pages").contains("Page " + pageNum);
+        boolean pages2 = getText(totalPages, "Total Pages").contains("Showing " + pageNum);
+        Assert.assertTrue(pages1 || pages2, "Page is not navigated to Next/Previous page");
     }
 
-    public String getTotalPages(){
+    public String getTotalPages() {
         return getText(totalPages, "Total Pages");
     }
 }

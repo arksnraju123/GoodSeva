@@ -36,11 +36,14 @@ public class CommonSteps {
             commonPage.openFacilitiesPage();
         } else if (page.equalsIgnoreCase("Purchase Orders")) {
             commonPage.openPurchaseOrdersPage();
-        }else if (page.equalsIgnoreCase("Inbound Deliveries")) {
+        } else if (page.equalsIgnoreCase("Inbound Deliveries")) {
             commonPage.openInboundDeliveriesPage();
+        } else if (page.equalsIgnoreCase("Goods Receiving")) {
+            commonPage.openGoodsReceivingPage();
         } else {
             Assert.fail("Invalid Page name provided, Provided page name is: " + page);
         }
+        WebDriverHelper.globalVariables.put("Page", page);
     }
 
     @Given("^User login into GoodsPly$")

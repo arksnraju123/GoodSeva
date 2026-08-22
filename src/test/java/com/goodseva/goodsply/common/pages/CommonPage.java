@@ -50,6 +50,9 @@ public class CommonPage extends DriverUtils {
     @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Inbound Deliveries']")
     private WebElement inboundDeliveries;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Goods Receiving']")
+    private WebElement goodsReceiving;
+
     @FindBy(how = How.XPATH, using = "//span[text()='Integrity']/following::span[text()='Bins']")
     private WebElement bins;
 
@@ -127,6 +130,11 @@ public class CommonPage extends DriverUtils {
     public void openInboundDeliveriesPage() {
         expandIntegrity();
         jsClick(inboundDeliveries, "Inbound Deliveries Link");
+    }
+
+    public void openGoodsReceivingPage() {
+        expandIntegrity();
+        jsClick(goodsReceiving, "Goods Receiving Link");
     }
 
     public void openBinsPage() {
